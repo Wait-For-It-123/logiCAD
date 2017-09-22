@@ -32,6 +32,25 @@ public class GUI {
 	public void run() {
 		//Create JFrame
 		JFrame frame = new JFrame("LogiCAD");
+		
+		// gridSpaceLabel is the workspace for the user
+		JLabel gridSpaceLabel = new JLabel();
+		
+		// For the prototype we put an example circuit in the workspace
+		// to give the user an example of what he can create in the
+		// MVP.
+		Image circuit_image;
+		try {
+			circuit_image = ImageIO.read(getClass().getResourceAsStream("images/sample_circuit2.png"));
+			gridSpaceLabel.setIcon(new ImageIcon(circuit_image));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		gridSpaceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		gridSpaceLabel.setVerticalAlignment(SwingConstants.CENTER);
+		
+		JScrollPane gridPane = new JScrollPane(gridSpaceLabel);
 
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -159,6 +178,9 @@ public class GUI {
 				         
 				
 		frame.getContentPane().add(treeView, BorderLayout.WEST);
+		
+		// Add gridPane to JFrame -- gridPane holds the JLabel gridSpaceLabel
+		frame.getContentPane().add(gridPane, BorderLayout.CENTER);
 		
 		frame.getContentPane().setBackground(Color.GRAY);
 		
