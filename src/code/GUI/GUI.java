@@ -252,9 +252,9 @@ public class GUI {
 				JLabel abouttext = new JLabel();
 				abouttext.setHorizontalTextPosition(SwingConstants.CENTER);
 				abouttext.setVerticalTextPosition(SwingConstants.NORTH);
-				abouttext.setPreferredSize(new Dimension(1300,768));
+				//abouttext.setPreferredSize(new Dimension(1300,768));
 				abouttext.setVerticalAlignment(SwingConstants.NORTH);
-				abouttext.setText("<html> <h3> Welcome to LogiCAD! </h3> <br>" +  
+				abouttext.setText("<html> <h3><font color = 'red'> Welcome to LogiCAD! </font></h3> <br>" +  
 						"LogiCAD is a digital circuit Computer-Aided Design application. " + 
 						"As you dive into our software you may notice several tools and menus at your disposal, so lets take a look at what we have to offer:<br>" +
 						"<br>" + 
@@ -262,44 +262,53 @@ public class GUI {
 						"Top Menu Bar:<br>" + 
 						"<br>" + 
 						"-File: Drop down menu of the following:<br>" + 
-						"<br>" +								"&ensp;  &ensp;  Save:  User is able to save project files.<br>" + 
-						"&ensp;  &ensp;  Load:  User is able to load previouse project files.<br>" + 
-						"&ensp;  &ensp;  Import Module:  User is able to save circuit designs as modules that can be loaded and used in future projects.<br>" + 
-						"&ensp;  &ensp;  Export Module:  A module is a completed circuit that is used after being saved as an element of another circuit.<br>" + 
+						"<br>" +								
+						"&ensp;  &ensp;  Save:&ensp;  User is able to save project files.<br>" + 
+						"&ensp;  &ensp;  Load:&ensp;  User is able to load previouse project files.<br>" + 
+						"&ensp;  &ensp;  Import Module:&ensp;  User is able to save circuit designs as modules that can be loaded and used in future projects.<br>" + 
+						"&ensp;  &ensp;  Export Module:&ensp;  A module is a completed circuit that is used after being saved as an element of another circuit.<br>" + 
+						"&ensp;  &ensp;  Set Project Path:&ensp;  User is able to set the project path to be able to use the file explorer pannel.<br>" + 
 						"<br>" + 
 						"-Edit: Drop down menu of the following:<br>" + 
-						"<br>" + 
+						"<br>" +
+						"&ensp;  &ensp;  Options:&ensp;  User is able to set various preferences.<br>" + 
+						"<br>" +
 						"-View: Drop down menu of the following:<br>" + 
 						"<br>" + 
+						"&ensp;  &ensp;  Toggle Side-Bar:&ensp;  User is able to set whether they want to see the file explorer or not.<br>" + 
+						"<br>" +
 						"-Help: Drop down menu of the following:<br>" + 
 						"<br>" + 
-						"&ensp;  &ensp;  About:  Information about the software and button features.<br>" + 
+						"&ensp;  &ensp;  About:&ensp;  Information about the software and button features.<br>" + 
 						"<br>" + 
 						"<br>" + 
 						"<br>" + 
 						"Gate Menu Bar:<br>" + 
 						"<br>" + 
-						"-AND Gate Button: An AND gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
+						"-AND Gate Button:&ensp;  An AND gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
-						"-OR Gate Button: An OR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
+						"-OR Gate Button:&ensp;  An OR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
-						"-NOT Gate Button: A NOT gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given one input and will provide an output.<br>" + 
+						"-NOT Gate Button:&ensp;  A NOT gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given one input and will provide an output.<br>" + 
 						"\r\n" + 
-						"-XOR Gate Button: An XOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
+						"-XOR Gate Button:&ensp;  An XOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
-						"-NAND Gate Button: A NAND gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
+						"-NAND Gate Button:&ensp;  A NAND gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
-						"-NOR Gate Button: A NOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
+						"-NOR Gate Button:&ensp;  A NOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
-						"-XNOR Gate Button: A XNOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
+						"-XNOR Gate Button:&ensp;  A XNOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
-						"-Input Gate Button: An Input wire will be presented to place on any logic gate or to attach to any other wires.<br>" + 
+						"-Input Gate Button:&ensp;  An Input wire will be presented to place on any logic gate or to attach to any other wires.<br>" + 
 						"\r\n" + 
-						"-Output Gate Button: An Output wire will be presented to place on any logic gate or to attach to any other wires.<br>" + 
+						"-Output Gate Button:&ensp;  An Output wire will be presented to place on any logic gate or to attach to any other wires.<br>" +
+						"<br>" + 
+						"-This gate menu bar is able to be moved around. By clicking the very left of the bar, a user can drag the menu bar all around and place it wherever one wishes.<br>" +
+						" If a user decides to even take the menu bar outside the window they may do so. When they click the exit button the bar will go back to where it last was.<br>" +
 						"<br>" + 
 						"<br>" + 
 						"<br>" +
-						"Left Side Panel:\r\n" + 
+						"Left Side Panel:" + 
 						"<br>" + 
 						"<br>" + 
 						"-This space displays your current working directory after you specify the file path.<br>" + 
@@ -309,7 +318,14 @@ public class GUI {
 						"<br>" + 
 						"-This is the area a user will be given to work in.<br>" +
 						"<br>" +
-						"<br>");
+						"<br>" +
+						"<br>" +
+						"<br>" +
+						"<br>" +
+						"<br>" +
+						"<br>" +
+						"<br>" +
+						"<br>" );
 								
 					
 						
@@ -317,8 +333,8 @@ public class GUI {
 						JPanel about = new JPanel();
 						about.add(aboutpane);
 						aboutpane.getViewport().add(abouttext);
-						aboutpane.setPreferredSize(d);
-						JOptionPane.showMessageDialog(null, aboutpane);
+						aboutpane.setPreferredSize(new Dimension(1300,768));
+						JOptionPane.showMessageDialog(null,aboutpane, "About", 1, null);
 						
 						
 					}
