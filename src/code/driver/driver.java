@@ -1,7 +1,6 @@
 package code.driver;
 
 import code.GUI.GUI;
-import code.logicGates.*;
 
 public class driver {
 	
