@@ -4,13 +4,19 @@ package code.GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -27,6 +33,102 @@ public class GUI {
 		Dimension d = new Dimension(1366,768);
 		
 		frame.setPreferredSize(d);
+		
+		
+		// Adds JToolbar and buttons to JFrame
+		
+		JToolBar gates_and_io = new JToolBar("Gates & I/O");
+		gates_and_io.setRollover(true);
+		
+		JButton button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/and_with_text.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/or_with_text.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/not_with_text.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/xor_with_text.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/nand_with_text.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/nor_with_text.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/xnor_with_text.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		
+		
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/input.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+		
+		
+	
+		button = new JButton();
+		try {
+			Image img = ImageIO.read(getClass().getResource("images/output.png"));
+			button.setIcon(new ImageIcon(img));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		gates_and_io.add(button);
+	
+		frame.getContentPane().add(gates_and_io, BorderLayout.NORTH);
+		
+		// End of JToolbar code
+		
 		
 		// Add side-bar
 		// Expandable List     
