@@ -33,6 +33,16 @@ public class GUI {
 		//Create JFrame
 		JFrame frame = new JFrame("LogiCAD");
 		
+		// Adds LogiCAD logo as icon to upper left JFrame Window and in task bar.
+				try {
+					Image img = ImageIO.read(getClass().getResource("images/logicad_logo_silver_40_40.png"));
+					ImageIcon logo_icon = new ImageIcon(img);
+					frame.setIconImage(logo_icon.getImage());
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		
 		// gridSpaceLabel is the workspace for the user
 		JLabel gridSpaceLabel = new JLabel();
 		
