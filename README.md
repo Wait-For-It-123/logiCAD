@@ -9,8 +9,8 @@ Our target user for LogiCAD is a person who has working knowledge of digital log
 
 ## DEPENDENCIES
 1. This program is written in Java
-2. It uses JRE System Library Java SE-1.8 and Java SE Development Kit 8.0
-3. To run the software Java SE Runtime Environment 8u144 must be installed on your machine
+2. It uses JRE 8u144, JRE System Library Java SE-1.8 and Java SE Development Kit 8.0
+3. To run the executable jar file Java SE Runtime Environment 8u144 must be installed on your machine
 
 ## DIRECTIONS FOR USE:
 These directions for running LogiCAD are for 64 bit Windows 10 machines only.
