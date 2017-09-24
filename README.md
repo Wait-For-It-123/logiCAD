@@ -2,6 +2,8 @@
 
 Team project for CSE442 at University at Buffalo Fall 2017
 
+LogiCAD is a digital logic CAD (computer aided design) tool. It can be used to create and test digital logic circuits.
+
 ## Target User:
 Our target user for LogiCAD is a person who has working knowledge of digital logic circuits (including logic gates) and is capable of designing their own circuits.
 
@@ -15,6 +17,7 @@ These directions for running LogiCAD are for Windows 10 machines only.
 
 ### TO RUN THE LOGICAD PROGRAM (EXECUTABLE JAR FILE):
 1. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.1.0
+
       i. Under the downloads section of this page download the executable jar file "logicad.jar"
 2. Find the file you downloaded on your computer.
 3. Double-click the file to launch logicad.
@@ -34,22 +37,22 @@ These directions for running LogiCAD are for Windows 10 machines only.
 6. Launch Eclipse and go to "File -> Open projects from File System"
 7. Click "Directory", navigate to the directory where you extracted the zip file and select it.
 8. Click "Finish"
-9. In the project explorer, click the arrow to the left to open the LogiCAD-0.1.0 project
+9. In the project explorer, click the arrow to the left expand the LogiCAD project directory
 10. Navigate to src.code.driver
-11. Right click on the file "driver.java" and select run as -> Java Application
+11. Right click on the file "driver.java" and select Run As -> Java Application
 12. The LogiCAD application should be launched 
 
 ### RUN FROM CLONE:
 1. Download GitBash from the URL: https://git-for-windows.github.io/ and install it
 2. Create a new folder in your filesystem where you would like your local repository to reside
-3. Open GitBash, navigate to the directory you created
+3. Open GitBash andnavigate to the directory you created using the `cd` command
 4. Clone the repository using the command `git clone https://github.com/Wait-For-It-123/logiCAD.git`
 
       i. This will create a local repository in the folder you created in step 1 whose root folder is named "logiCAD"
 5. Launch Eclipse and go to "File -> Open projects from File System"
 6. Click "Directory", navigate to the "logiCAD" directory from step 3a.
 7. Click "Finish"
-8. In the project explorer, click the arrow to the left to open the LogiCAD project
+8. In the project explorer, click the arrow to the left to expand the LogiCAD project directory
 9. Navigate to src.code.driver
-10. Right click on the file "driver.java" and select run as -> Java Application
+10. Right click on the file "driver.java" and select Run As -> Java Application
 11. The LogiCAD application should be launched 
