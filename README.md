@@ -49,7 +49,7 @@ These directions for running LogiCAD are for 64 bit Windows 10 machines only.
 12. The LogiCAD application should be launched 
 
 ### RUN FROM CLONE:
-1. Install dependencies as listed in steps 1 and 2 in the RUN FROM SOURCE section.
+1. Follow steps 1 and 2 in the RUN FROM SOURCE section.
 2. Download GitBash from the URL: https://git-for-windows.github.io/ and install it
 3. Create a new folder in your filesystem where you would like your local repository to reside
 4. Open GitBash andnavigate to the directory you created using the `cd` command
