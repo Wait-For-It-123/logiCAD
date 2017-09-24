@@ -13,7 +13,7 @@ Our target user for LogiCAD is a person who has working knowledge of digital log
 3. To run the software Java SE Runtime Environment 8u144 must be installed on your machine
 
 ## DIRECTIONS FOR USE:
-These directions for running LogiCAD are for Windows 10 machines only.
+These directions for running LogiCAD are for 64 bit Windows 10 machines only.
 
 ### TO RUN THE LOGICAD PROGRAM (EXECUTABLE JAR FILE):
 1. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.1.0
@@ -34,7 +34,6 @@ These directions for running LogiCAD are for Windows 10 machines only.
 
       i. For 64 bit use this URL: http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/oxygen/1.RC4/eclipse-java-oxygen-1-rc4-win32-x86_64.zip
 	  
-      ii. For 32 bit use this URL: http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/oxygen/1.RC4/eclipse-java-oxygen-1-rc4-win32.zip
 2. Download and install JRE 8 and JDK 8.0
 
       i. For the JRE use this URL: http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
