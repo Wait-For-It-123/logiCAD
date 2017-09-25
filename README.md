@@ -37,6 +37,7 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
 2. Download and install JRE 8 and JDK 8.0
 
       i. For the JRE, use this URL: http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html and download the Windows x64 offline download.
+      
       ii. For the JDK, use this URL: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html and download the Java SE Development Kit 8u144 Windows x64 download.
 3. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.1.0
 4. Under the downloads section download "Source code (zip)"
