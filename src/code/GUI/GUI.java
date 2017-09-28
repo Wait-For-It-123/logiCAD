@@ -76,6 +76,7 @@ public class GUI {
 		gates_and_io.setRollover(true);
 		
 		JButton button = new JButton();
+		button.setToolTipText("<html><img src=" + getClass().getResource("images/And_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/and_with_text.png"));
 			button.setIcon(new ImageIcon(img));
@@ -85,6 +86,7 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton();
+		button.setToolTipText("<html><img src=" + getClass().getResource("images/Or_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/or_with_text.png"));
 			button.setIcon(new ImageIcon(img));
@@ -94,6 +96,7 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton();
+		button.setToolTipText("<html><img src=" + getClass().getResource("images/Not_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/not_with_text.png"));
 			button.setIcon(new ImageIcon(img));
@@ -103,6 +106,7 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton();
+		button.setToolTipText("<html><img src=" + getClass().getResource("images/Xor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/xor_with_text.png"));
 			button.setIcon(new ImageIcon(img));
@@ -112,6 +116,7 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton();
+		button.setToolTipText("<html><img src=" + getClass().getResource("images/Nand_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/nand_with_text.png"));
 			button.setIcon(new ImageIcon(img));
@@ -121,6 +126,7 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton();
+		button.setToolTipText("<html><img src=" + getClass().getResource("images/Nor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/nor_with_text.png"));
 			button.setIcon(new ImageIcon(img));
@@ -130,6 +136,7 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton();
+		button.setToolTipText("<html><img src=" + getClass().getResource("images/Xnor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/xnor_with_text.png"));
 			button.setIcon(new ImageIcon(img));
