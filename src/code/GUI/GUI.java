@@ -217,18 +217,58 @@ public class GUI {
 		
 		//Add menu items to File Menu
 		menuItem = new JMenuItem("Save");
+		//Create an action listener for the save item
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to save your current work!");
+			}
+		});
 		menu.add(menuItem);
+		
+		
 		menuItem = new JMenuItem("Load");
+		//Create an action listener for the load item
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to load previous work!");
+			}
+		});
 		menu.add(menuItem);
+		
+		
 		menuItem = new JMenuItem("Import Module");
+		//Create an action listener for the import module item
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to bring a previously made module into your current work!");
+			}
+		});
 		menu.add(menuItem);
+		
+		
 		menuItem = new JMenuItem("Export Module");
+		//Create an action listener for the export module item
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to save your work as a module that may be integrated into other projects!");
+			}
+		});
 		menu.add(menuItem);
+		
+		
 		menuItem = new JMenuItem("Set Project Directory");
+		//Create an action listener for the set project directory item
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to set the project directory to save and load your work!");
+			}
+		});
 		menu.add(menuItem);
 		
 		//Add File Menu to Main Menu
 		menuBar.add(menu);
+		
+		
 		
 		//Create Edit Menu
 		menu = new JMenu("Edit");
@@ -237,9 +277,19 @@ public class GUI {
 		        "Edit Menu");
 		
 		menuItem = new JMenuItem("Options");
+		
+		//Create an action listener for the options item
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to set various preferences!");
+			}
+		});
+		
 		menu.add(menuItem);
 		
 		menuBar.add(menu);
+		
+		
 		
 		//Create View Menu
 		menu = new JMenu("View");
@@ -248,9 +298,19 @@ public class GUI {
 		        "View Menu");
 		
 		menuItem = new JMenuItem("Toggle Side-Bar");
+		
+		//Create an action listener for the toggle side-bar item
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to close the file explorer menu!");
+			}
+		});
+				
 		menu.add(menuItem);
 		
 		menuBar.add(menu);
+		
+		
 		
 		//Create Help Menu
 		menu = new JMenu("Help");
@@ -263,7 +323,7 @@ public class GUI {
 		menuItem.setMnemonic(KeyEvent.VK_A);
 		
 		
-		//Create an action listener for the about menu
+		//Create an action listener for the help item
 		menuItem.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				JLabel abouttext = new JLabel();
