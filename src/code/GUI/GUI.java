@@ -1085,7 +1085,7 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton("EVALUATE");
-		button.setToolTipText("<html> <font size=4> This button will evaluate the circuit(s) and display output values.<br>ALL circuit elements must be fully connected <br> There can be no \"dangling\" wires</font> </html>");
+		button.setToolTipText("<html> <font size=4> This button will evaluate the circuit(s) and display output values.<br>ALL circuit elements must be fully connected<br> There can be no \"dangling\" wires</font> </html>");
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -1124,7 +1124,7 @@ public class GUI {
 					errorDialog.setHorizontalTextPosition(SwingConstants.CENTER);
 					errorDialog.setVerticalTextPosition(SwingConstants.NORTH);
 					errorDialog.setVerticalAlignment(SwingConstants.NORTH);
-					errorDialog.setText("The circuit has missing connections and cannot be evaluated! Please complete the circuit.<br>All output values will now be set to X");
+					errorDialog.setText("<html> <font size=4> The circuit has missing connections and cannot be evaluated! Please complete the circuit.<br>All output values will now be set to X </font></html>");
 					JOptionPane.showMessageDialog(null,errorDialog, "Error!", 0, null);
 					
 					//elementImageTypes
@@ -1269,29 +1269,13 @@ public class GUI {
 						"<br>" + 
 						"Top Menu Bar:<br>" + 
 						"<br>" + 
-						"-File: Drop down menu of the following:<br>" + 
-						"<br>" +								
-						"&ensp;  &ensp;  Save:&ensp;  User is able to save project files.<br>" + 
-						"&ensp;  &ensp;  Load:&ensp;  User is able to load previouse project files.<br>" + 
-						"&ensp;  &ensp;  Import Module:&ensp;  User is able to save circuit designs as modules that can be loaded and used in future projects.<br>" + 
-						"&ensp;  &ensp;  Export Module:&ensp;  A module is a completed circuit that is used after being saved as an element of another circuit.<br>" + 
-						"&ensp;  &ensp;  Set Project Path:&ensp;  User is able to set the project path to be able to use the file explorer pannel.<br>" + 
-						"<br>" + 
-						"-Edit: Drop down menu of the following:<br>" + 
-						"<br>" +
-						"&ensp;  &ensp;  Options:&ensp;  User is able to set various preferences.<br>" + 
-						"<br>" +
-						"-View: Drop down menu of the following:<br>" + 
-						"<br>" + 
-						"&ensp;  &ensp;  Toggle Side-Bar:&ensp;  User is able to set whether they want to see the file explorer or not.<br>" + 
-						"<br>" +
 						"-Help: Drop down menu of the following:<br>" + 
 						"<br>" + 
 						"&ensp;  &ensp;  About:&ensp;  Information about the software and button features.<br>" + 
 						"<br>" + 
 						"<br>" + 
 						"<br>" + 
-						"Gate Menu Bar:<br>" + 
+						"Gate and Operations Menu Bar:<br>" + 
 						"<br>" + 
 						"-AND Gate Button:&ensp;  An AND gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
@@ -1307,27 +1291,44 @@ public class GUI {
 						"\r\n" + 
 						"-XNOR Gate Button:&ensp;  A XNOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
 						"\r\n" + 
-						"-Input Gate Button:&ensp;  An Input wire will be presented to place on any logic gate or to attach to any other wires.<br>" + 
+						"-Input Gate Button:&ensp;  An Input circuit element will appear in the workspace. It will appear, by default, with a 0 inside signifying the signal it will produce. It can be toggled to a 1 using the Toggle Input button.<br>" + 
 						"\r\n" + 
-						"-Output Gate Button:&ensp;  An Output wire will be presented to place on any logic gate or to attach to any other wires.<br>" +
-						"<br>" + 
+						"-Output Gate Button:&ensp;  An Output circuit element will appear in the workspace. It will appear, by default, with nothing inside of it signifying that no signals have been propagated to it. It will change to a 0 or 1<br>"
+						+ "when the Evaluate button is clicked and there are no errors. If errors are present, an \'X\' will appear in the output.<br>" +
+						"\r\n" +
+						"-Delete Button:&ensp;  The delete button allows the user to delete a single circuit element in the workspace. When deleted, any connections to that circuit element will be erased, including the wires.<br>" +
+						"\r\n" +
+						"-Connect Button:&ensp;  The connect button allows the user to connect two circuit elements. To make a proper connection the user must first click connect and then select an input<br>"
+						+ "or source gate (gate whose output does not have a connection). Then the user should select the destination gate (gate that has a free input). When both have been selected a connection<br>"
+						+ "will have been made and a wire will be drawn between them. NOTE: To prevent wires from drawing over other circuit elements or wires the circuit elements must be laid out in a manner<br>"
+						+ "such that the path (using 90 degree angles) has no circuit elements.<br>" +
+						"\r\n" +
+						"-Toggle Input:&ensp;  The toggle input button is specifically used to toggle the Input circuit element to be either a 0 or a 1. This will be the value of the signal that propagates through the circuit.<br>" +
+						"\r\n" +
+						"-Cancel Button:&ensp;  The cancel button will invalidate any button selection or current operation.<br>" +
+						"\r\n" +
+						"-Evaluate Button:&ensp;  The Evaluate button will propagate the signal(s) through the circuit and display the output in the output circuit elements as a 0 or 1. For the evaluate button to trigger the<br>"
+						+ "propagation there must be no dangling wires and each gate must be fulle connected(no free inputs or outputs). If there are, an error window will popup and the outputs are set to \'X\', signifying that<br>"
+						+ "there are errors in the workspace.<br>" +
+						"<br>" +
 						"-This gate menu bar is able to be moved around. By clicking the very left of the bar, a user can drag the menu bar all around and place it wherever one wishes.<br>" +
 						" If a user decides to even take the menu bar outside the window they may do so. When they click the exit button the bar will go back to where it last was.<br>" +
 						"<br>" + 
 						"<br>" + 
 						"<br>" +
-						"Left Side Panel:" + 
-						"<br>" + 
-						"<br>" + 
-						"-This space displays your current working directory after you specify the file path.<br>" + 
-						"<br>" + 
-						"<br>" + 
 						"Grid Workspace:<br>" + 
 						"<br>" + 
-						"-This is the area a user will be given to work in.<br>" +
+						"-This is the area where circuit elements are placed. Circuit elements can be placed freely in the workspace. As more elements are added the workspace will expand to the right and down as needed.<br>"
+						+ "To navigate the workspace move the scroll bars that appear on the bottom and right of the workspace." +
 						"<br>" +
 						"<br>" +
+						"Making Circuits:<br>" +
 						"<br>" +
+						"-Making proper circuits in LogiCAD involves following a couple of contraints.<br>"
+						+ "&ensp; 1. When making conections click the source gate first and the target gate second.<br>"
+						+ "&ensp; 2. Inputs can not be the target of a connection.<br>"
+						+ "&ensp; 3. Outputs can not be the source of a connection.<br>"
+						+ "&ensp; 4. Feedback loops are not allowed. Meaning that the target of a connection can not be a gate that is an input to the source.<br>" +
 						"<br>" +
 						"<br>" +
 						"<br>" +
