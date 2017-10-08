@@ -184,7 +184,8 @@ public class GUI {
 				       
 				        add(scroller, BorderLayout.CENTER);
 				    }
-				     
+				    
+				    
 				    class ImageCoordAndType{
 				    	private int elementType;
 				    	private int centerImageX;
@@ -219,9 +220,188 @@ public class GUI {
 						int getUpperLeftBufferY() {return upperLeftBufferY;}
 				    }
 				    
+				    
+				    
+				 
 				    /** The component inside the scroll pane. */
 				    class DrawingPane extends JPanel {
 				        
+				    	protected void paintComponent(Graphics g) {
+				            
+				    		
+				    		Graphics2D g2 = (Graphics2D) g;
+				    		g2.clearRect(0, 0, this.getWidth(), this.getHeight());
+				    		
+				    		
+				    		super.paintComponent(g);
+
+				            for(int i = 0; i < circuitElementImages.size(); ++i) {
+				            	g.drawImage(circuitElementImages.get(i), imageInfo.get(i).getUpperLeftImageX(), imageInfo.get(i).getUpperLeftImageY(), null);
+				            }
+				            
+				            System.out.println(model.queryAndGetConnections());
+				            
+				            ArrayList<Connection> connections = model.queryAndGetConnections();
+				    		
+				            System.out.println(connections);
+				            System.out.println(model.queryAndGetConnections());
+				            
+				            wires.clear();
+				            parentLineOffsets.clear();
+				            
+				            for(Connection con: connections) {
+				    			String parentID = con.getParentID();
+				    			if(parentLineOffsets.get(parentID) == null) {
+				    				parentLineOffsets.put(parentID, 0);
+				    			}
+				    			else {
+				    				parentLineOffsets.put(parentID, parentLineOffsets.get(parentID) + 1);
+				    			}
+				    			String childID = con.getChildID();
+				    			int inputType = con.getInputType();
+				    			int parentType = -2;
+				    			int xCoordParent = -1;
+				    			int yCoordParent = -1;
+				    			int xCoordChild = -1;
+				    			int yCoordChild = -1;
+				    			for(ImageCoordAndType imgData: imageInfo) {
+				    				if(parentID.equals(imgData.getID())) {
+				    					parentType = imgData.getElementType();
+				    					xCoordParent = imgData.getCenterImageX();
+				    					yCoordParent = imgData.getCenterImageY();
+				    				}
+				    			}
+				    			
+				    			for(ImageCoordAndType imgData: imageInfo) {
+				    				if(childID.equals(imgData.getID())) {
+				    					xCoordChild = imgData.getCenterImageX();
+				    					yCoordChild = imgData.getCenterImageY();
+				    				}
+				    			}
+				    			
+				    			if(inputType == 1) {
+				    				// parent is Gate
+				    				if(parentType >= 0 && parentType <= 6) {
+				    					yCoordChild-=10;//alligns the line to the correct place based on gate location
+					    				xCoordChild-=45;
+					    				xCoordParent+=45;
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}
+				    				// parent is Input
+				    				else if(parentType == 7) {
+				    					yCoordChild-=10;//alligns the line to the correct place based on gate location
+					    				xCoordChild-=45;
+					    				xCoordParent+=30;
+					    				
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}	
+				    				
+				    			}//end if inputType == 1
+				    			
+				    			if(inputType == 2) {
+				    				// parent is Gate
+				    				if(parentType >= 0 && parentType <= 6) {
+				    					yCoordChild+=10;//alligns the line to the correct place based on gate location
+					    				xCoordChild-=45;
+					    				xCoordParent+=45;
+					    				
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}
+				    				// parent is Input
+				    				else if(parentType == 7) {
+				    					yCoordChild+=10;//alligns the line to the correct place based on gate location
+					    				xCoordChild-=45;
+					    				xCoordParent+=30;
+					    				
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}	
+				    			}
+				    			
+				    			if(inputType == 3) {
+				    				// parent is Gate
+				    				if(parentType >= 0 && parentType <= 6) {
+					    				xCoordChild-=45;
+					    				xCoordParent+=45;
+					    				
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}
+				    				// parent is Input
+				    				else if(parentType == 7) {
+					    				xCoordChild-=45;
+					    				xCoordParent+=30;
+					    				
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}	
+				    			}
+				    			
+				    			if(inputType == 4) {
+				    				// parent is Gate
+				    				if(parentType >= 0 && parentType <= 6) {
+					    				xCoordChild-=30;
+					    				xCoordParent+=45;
+					    				
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}
+				    				// parent is Input
+				    				else if(parentType == 7) {
+					    				xCoordChild-=30;
+					    				xCoordParent+=30;
+					    				int offset = parentLineOffsets.get(parentID);
+					    				offset *= 5;
+					    				Line2D line1 = new Line2D.Float(xCoordParent, yCoordParent, xCoordParent+offset, yCoordParent);
+					    				Line2D line2 = new Line2D.Float(xCoordParent+offset, yCoordParent, xCoordParent+offset, yCoordChild);
+					    				Line2D line3 = new Line2D.Float(xCoordParent+offset, yCoordChild, xCoordChild, yCoordChild);
+					    				wires.add(new Wire(line1, line2, line3));
+				    				}	
+				    			}
+	
+				    		} // end for
+				            
+				            
+				            g2.setStroke(new BasicStroke(2));
+				            g2.setColor(Color.WHITE);
+				            for(Wire w: wires) {
+				            	g2.draw(w.getLine1());
+				            	g2.draw(w.getLine2());
+				            	g2.draw(w.getLine3());
+				            }
+		
+				    	}// end paint component method
 
 				    }// end class
 				    		
@@ -365,13 +545,14 @@ public class GUI {
 				    
 				      //no overlapping gates  
 				        	
-				        	CEBTypetemp = circuitElementButtonClicked;
+				        CEBTypetemp = circuitElementButtonClicked;
 				        
-				        if(optionButtons == MOVE_BUTTON) {
+//				        if(optionButtons == MOVE_BUTTON) {
+//				        	
+//				        }
+				        
+				        if(optionButtons == DELETE_BUTTON) {
 				        	
-				        }
-				        
-				        else if(optionButtons == DELETE_BUTTON) {
 				        	
 				        	System.out.println("I am here 1");
 				        	boolean b = false;
@@ -509,6 +690,11 @@ public class GUI {
 				        			System.out.println("connection made between " + parentID + " and " + childID);
 				        			//model.printAllConnectionsForAllCircuitElements();
 				        		}
+				        		
+				        		if(!connectionSuccessful) {
+				        			JOptionPane.showMessageDialog(frame, "Not a valid connection!");
+				        		}
+				        		
 				        		optionButtons = INVALID;
 				        		
 				        	}
@@ -518,7 +704,7 @@ public class GUI {
 				        	
 				        }
 				     	
-				        else { //General case
+				        else if (circuitElementButtonClicked != INVALID){ //General case
 				        	boolean b = false;
 				        	String id = "";
 				        	for (ImageCoordAndType temp : imageInfo) {
@@ -539,26 +725,30 @@ public class GUI {
 				        		
 				        		if ((((clicklowx<=highx) && (clicklowx>=lowx)) && ((clicklowy<=highy) && (clicklowy>=lowy)))) {
 				        			circuitElementButtonClicked = INVALID;
+				        			JOptionPane.showMessageDialog(frame, "You have tried to place a new circuit element too close to an existing element!");
 				        			id = temp.getID();
 				        			b = true;
 
 				  
 				        		}
-				        		if ((((clicklowx<=highx) && (clicklowx>=lowx)) && ((clickhighy<=highy) && (clickhighy>=lowy)))) {
+				        		else if ((((clicklowx<=highx) && (clicklowx>=lowx)) && ((clickhighy<=highy) && (clickhighy>=lowy)))) {
 				        			circuitElementButtonClicked = INVALID;
+				        			JOptionPane.showMessageDialog(frame, "You have tried to place a new circuit element too close to an existing element!");
 				        			id = temp.getID();
 				        			b = true;
 
 				        		}
-				        		if ((((clickhighx<=highx) && (clickhighx>=lowx)) && ((clicklowy<=highy) && (clicklowy>=lowy)))) {
+				        		else if ((((clickhighx<=highx) && (clickhighx>=lowx)) && ((clicklowy<=highy) && (clicklowy>=lowy)))) {
 				        			circuitElementButtonClicked = INVALID;
+				        			JOptionPane.showMessageDialog(frame, "You have tried to place a new circuit element too close to an existing element!");
 				        			id = temp.getID();
 				        			b = true;
 				        			
 				        			
 				        		}
-				        		if ((((clickhighx<=highx) && (clickhighx>=lowx)) && ((clickhighy<=highy) && (clickhighy>=lowy)))) {
+				        		else if ((((clickhighx<=highx) && (clickhighx>=lowx)) && ((clickhighy<=highy) && (clickhighy>=lowy)))) {
 				        			circuitElementButtonClicked = INVALID;
+				        			JOptionPane.showMessageDialog(frame, "You have tried to place a new circuit element too close to an existing element!");
 				        			id = temp.getID();
 				        			b = true;
 
@@ -618,6 +808,7 @@ public class GUI {
 				    public void mouseEntered(MouseEvent e){}
 				    public void mouseExited(MouseEvent e){}
 				    public void mousePressed(MouseEvent e){}
+				    
 				    
 				} // end class ScrollDemo2
 				
@@ -788,7 +979,7 @@ public class GUI {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		button.setToolTipText("<html> <font size=4>Click this button then cick in the workspace to place an Input circuit element<br> Inputs are the logic values flowing into the circuit(s)<br>Input values are initialized to 0</font> </html>");
+		button.setToolTipText("<html> <font size=4>Click this button then cick in the workspace to place an Input circuit element<br> Inputs are the logic values flowing into the circuit(s)</font> </html>");
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
