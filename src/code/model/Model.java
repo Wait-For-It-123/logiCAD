@@ -332,29 +332,32 @@ public class Model {
 	 * This method allows for a connection in the circuit to be made.
 	 * The convention is that the parent is the element whose output will feed into one of the inputs of the child.
 	 */
-	public boolean makeCircuitConnection(Object parent, Object child) {
+	public int makeCircuitConnection(Object parent, Object child) {
 		
 		// We are not allowing a child's output to feed into one of its inputs (no feedback)
-		if(parent == child) {System.out.println("Can't add connection from child into parent!"); return false;}
+		if(parent == child) {System.out.println("Can't connect a circuit element to itself!"); 
+			
+			return 1;
+		}
 		
 		if(parent instanceof Gate) {
 			
 			Gate g = (Gate) parent;
 			ArrayList<Object> tree = g.getFamilyTree();
 		
-			if(tree.contains(child)) {System.out.println("Can't add a connection into predecessor!"); return false;}
+			if(tree.contains(child)) {System.out.println("Can't add a connection into predecessor!"); return 2;}
 		}
 		else if(parent.getClass() == Output.class) {
 			Output o = (Output) parent;
 			ArrayList<Object> tree = o.getFamilyTree();
-			if(tree.contains(child)) {System.out.println("Can't add a connection into predecessor!"); return false;}
+			if(tree.contains(child)) {System.out.println("Can't add a connection into predecessor!"); return 2;}
 		}
 		
 		//We cannot allow an output to function as a parent, because it has only a single input
-		if(parent.getClass() == Output.class) { System.out.println("Can't add a connection in which Output is parent!") ;return false; }
+		if(parent.getClass() == Output.class) { System.out.println("Can't add a connection in which Output is parent!") ;return 3; }
 		
 		// We cannot allow an input to function as a child, because it has only a single output
-		if(child.getClass() == Input.class) { System.out.println("Can't add a connection in which Input is child!"); return false; }
+		if(child.getClass() == Input.class) { System.out.println("Can't add a connection in which Input is child!"); return 4; }
 		
 		// return value on attempt to make connection into the child
 		int inputNum = 5;
@@ -363,7 +366,7 @@ public class Model {
 			Output out = (Output) child; // we know child is of type Output, so cast to Output to access its class members
 			inputNum = out.setInput(parent);
 			
-			if(inputNum == 0) { return false; } // The output must already contain an input, thus adding parent as input was unsuccessful
+			if(inputNum == 0) { return 5; } // The output must already contain an input, thus adding parent as input was unsuccessful
 			else {
 				if(parent instanceof Gate) {
 					Gate g = (Gate) parent;
@@ -385,7 +388,7 @@ public class Model {
 			inputNum = childGate.setInput(parent);
 			propagateFamilyTreeToAllChildren(childGate);  // problem here?
 			
-			if(inputNum == 0) {return false;}
+			if(inputNum == 0) {return 6;}
 			else if(inputNum == 1) {
 				if(parent instanceof Gate) {
 					Gate g = (Gate) parent;
@@ -425,7 +428,7 @@ public class Model {
 			}
 		}
 		
-		return true;
+		return 7;
 		
 	} // end of MakeCircuitConnection
 	
@@ -948,7 +951,7 @@ public ArrayList<Connection> queryAndGetConnections() {
 	}
 
 
-	public boolean makeConnectionFromIDs(String parentID, String childID) {
+	public int makeConnectionFromIDs(String parentID, String childID) {
 		
 		Object parent = null;
 		Object child = null;
