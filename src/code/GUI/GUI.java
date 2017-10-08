@@ -979,7 +979,7 @@ public class GUI {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		button.setToolTipText("<html> <font size=4>Click this button then cick in the workspace to place an Input circuit element<br> Inputs are the logic values flowing into the circuit(s)</font> </html>");
+		button.setToolTipText("<html> <font size=4>Click this button then cick in the workspace to place an Input circuit element<br> Inputs are the logic values flowing into the circuit(s)<br>Input values are initialized to 0</font> </html>");
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
