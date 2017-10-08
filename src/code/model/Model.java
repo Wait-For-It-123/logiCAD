@@ -601,7 +601,65 @@ public class Model {
 	}
 	
 	
-	
+	public String addObjectToWorkspace(Object obj) {
+		workspaceElements.add(obj);
+		String id = "";
+		if(obj instanceof andGate) {
+			andGate and = (andGate) obj;
+			id = "and" + Integer.toString(andGateNum); 
+			and.setID(id); 
+			andGateNum++;
+		}
+		if(obj instanceof orGate) {
+			orGate or = (orGate) obj;
+			id = "or" + Integer.toString(orGateNum); 
+			or.setID(id); 
+			orGateNum++;
+		}
+		if(obj instanceof notGate) {
+			notGate not = (notGate) obj;
+			id = "not" + Integer.toString(notGateNum); 
+			not.setID(id); 
+			notGateNum++;
+		}
+		if(obj instanceof norGate) {
+			norGate nor = (norGate) obj;
+			id = "nor" + Integer.toString(norGateNum); 
+			nor.setID(id); 
+			norGateNum++;
+		}
+		if(obj instanceof nandGate) {
+			nandGate nand = (nandGate) obj;
+			id = "nand" + Integer.toString(nandGateNum); 
+			nand.setID(id); 
+			nandGateNum++;
+		}
+		if(obj instanceof xorGate) {
+			xorGate xor = (xorGate) obj;
+			id = "xor" + Integer.toString(xorGateNum); 
+			xor.setID(id); 
+			xorGateNum++;
+		}
+		if(obj instanceof xnorGate) {
+			xnorGate xnor = (xnorGate) obj;
+			id = "xnor" + Integer.toString(xnorGateNum); 
+			xnor.setID(id); 
+			xnorGateNum++;
+		}
+		if(obj instanceof Input) {
+			Input in = (Input) obj;
+			id = "in" + Integer.toString(inputNum); 
+			in.setID(id); 
+			inputNum++;
+		}
+		if(obj instanceof Output) {
+			Output out = (Output) obj;
+			id = "out" + Integer.toString(outputNum); 
+			out.setID(id); 
+			outputNum++;
+		}
+		return id;
+	}
 
 	
 	public void printAllInputsAndValues() {
@@ -691,7 +749,108 @@ public class Model {
 		
 	}
 	
-	
+public ArrayList<Connection> queryAndGetConnections() {
+		
+		ArrayList<Connection> connections = new ArrayList<Connection>();
+		for(int i = 0; i < workspaceElements.size(); ++i) {
+			Object parent = workspaceElements.get(i);
+			
+			// Parent is Input
+			if(parent instanceof Input) {
+				ArrayList<Object> children1Inputs = ((Input) parent).getInput1Children();
+				for(int j = 0; j < children1Inputs.size(); ++j) {
+					if(children1Inputs.get(j) instanceof Gate) {
+						String parentID = ((Input) parent).getID();
+						String childID = ((Gate) children1Inputs.get(j)).getID();
+						int inputType = 1;
+						if(children1Inputs.get(j) instanceof notGate) {
+							inputType = 3;
+						}
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+					else if(children1Inputs.get(j) instanceof Output) {
+						String parentID = ((Input) parent).getID();
+						String childID = ((Output) children1Inputs.get(j)).getID();
+						int inputType = 4;
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+				}
+				
+				ArrayList<Object> children2Inputs = ((Input) parent).getInput2Children();
+				for(int j = 0; j < children2Inputs.size(); ++j) {
+					if(children2Inputs.get(j) instanceof Gate) {
+						String parentID = ((Input) parent).getID();
+						String childID = ((Gate) children2Inputs.get(j)).getID();
+						int inputType = 2;
+						if(children2Inputs.get(j) instanceof notGate) {
+							inputType = 3;
+						}
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+					else if(children2Inputs.get(j) instanceof Output) {
+						String parentID = ((Input) parent).getID();
+						String childID = ((Output) children2Inputs.get(j)).getID();
+						int inputType = 4;
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+				}
+				
+				
+			}
+			
+			// Parent is Gate
+			if(parent instanceof Gate) {
+				ArrayList<Object> children1Inputs = ((Gate) parent).getChildren_Inputs1();
+				for(int j = 0; j < children1Inputs.size(); ++j) {
+					if(children1Inputs.get(j) instanceof Gate) {
+						String parentID = ((Gate) parent).getID();
+						String childID = ((Gate) children1Inputs.get(j)).getID();
+						int inputType = 1;
+						if(children1Inputs.get(j) instanceof notGate) {
+							inputType = 3;
+						}
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+					else if(children1Inputs.get(j) instanceof Output) {
+						String parentID = ((Gate) parent).getID();
+						String childID = ((Output) children1Inputs.get(j)).getID();
+						int inputType = 4;
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+				}
+				
+				ArrayList<Object> children2Inputs = ((Gate) parent).getChildren_Inputs2();
+				for(int j = 0; j < children2Inputs.size(); ++j) {
+					if(children2Inputs.get(j) instanceof Gate) {
+						String parentID = ((Gate) parent).getID();
+						String childID = ((Gate) children2Inputs.get(j)).getID();
+						int inputType = 2;
+						if(children2Inputs.get(j) instanceof notGate) {
+							inputType = 3;
+						}
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+					else if(children2Inputs.get(j) instanceof Output) {
+						String parentID = ((Gate) parent).getID();
+						String childID = ((Output) children2Inputs.get(j)).getID();
+						int inputType = 4;
+						Connection newCon = new Connection(parentID, childID, inputType);
+						connections.add(newCon);
+					}
+				}
+
+			}
+		}//end outer for
+		
+		return connections;
+	}
 	
 	
 	public void printAllWorkspaceElements() {
@@ -748,7 +907,30 @@ public class Model {
 		}
 	}
 	
-	
+	public int toggleInputFromID(String InputID) {
+        Input Input1 = null;
+        int found=-1;
+        for(int i = 0; i < workspaceElements.size(); ++i) {
+            Object currentElement = workspaceElements.get(i);
+            if(currentElement instanceof Input) {
+                if(((Input) currentElement).getID().equals(InputID)) {
+                    Input1 =(Input) currentElement;
+                    if(Input1.getInputValue()==0) {
+                    Input1.setInputValue(1);
+                    found = 1;
+                    System.out.println("input set to 1");
+                    }
+                    else if(Input1.getInputValue()==1) {
+                    Input1.setInputValue(0);
+                    found = 0;
+                    System.out.println("input set to 0");
+                    
+                    } 
+                }
+            }
+        }
+        return found;
+    }
 	
 
 	public int getOutputValueFromID(String id) {
