@@ -49,16 +49,16 @@ public class GUI {
 		// For the prototype we put an example circuit in the workspace
 		// to give the user an example of what he can create in the
 		// MVP.
-		Image circuit_image;
-		try {
-			circuit_image = ImageIO.read(getClass().getResourceAsStream("images/sample_circuit2.png"));
-			gridSpaceLabel.setIcon(new ImageIcon(circuit_image));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		gridSpaceLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		gridSpaceLabel.setVerticalAlignment(SwingConstants.CENTER);
+//		Image circuit_image;
+//		try {
+//			circuit_image = ImageIO.read(getClass().getResourceAsStream("images/sample_circuit2.png"));
+//			gridSpaceLabel.setIcon(new ImageIcon(circuit_image));
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		gridSpaceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+//		gridSpaceLabel.setVerticalAlignment(SwingConstants.CENTER);
 		
 		JScrollPane gridPane = new JScrollPane(gridSpaceLabel);
 
@@ -172,29 +172,29 @@ public class GUI {
 		// End of JToolbar code
 		
 		
-		// Add side-bar
-		// Expandable List     
-		DefaultMutableTreeNode falsetop = new DefaultMutableTreeNode("");
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Project1");
-		DefaultMutableTreeNode child = new DefaultMutableTreeNode("Example Circuit One");
-		DefaultMutableTreeNode child2 = new DefaultMutableTreeNode("32bit ALU");
-		DefaultMutableTreeNode child3 = new DefaultMutableTreeNode("Carry Look Ahead Adder");
-		DefaultMutableTreeNode top2 = new DefaultMutableTreeNode("32bit CPU");
-		falsetop.add(top);
-		falsetop.add(top2);
-		top.add(child);
-		top2.add(child2);
-		top2.add(child3);
-		dirStructure = new JTree(falsetop);
-		dirStructure.setRootVisible(false);
-		JScrollPane treeView = new JScrollPane(dirStructure);
-		treeView.setPreferredSize(new Dimension(200,768));
-		dirStructure.expandRow(1);
-		dirStructure.expandRow(2);
-				
-				         
-				
-		frame.getContentPane().add(treeView, BorderLayout.WEST);
+//		// Add side-bar
+//		// Expandable List     
+//		DefaultMutableTreeNode falsetop = new DefaultMutableTreeNode("");
+//		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Project1");
+//		DefaultMutableTreeNode child = new DefaultMutableTreeNode("Example Circuit One");
+//		DefaultMutableTreeNode child2 = new DefaultMutableTreeNode("32bit ALU");
+//		DefaultMutableTreeNode child3 = new DefaultMutableTreeNode("Carry Look Ahead Adder");
+//		DefaultMutableTreeNode top2 = new DefaultMutableTreeNode("32bit CPU");
+//		falsetop.add(top);
+//		falsetop.add(top2);
+//		top.add(child);
+//		top2.add(child2);
+//		top2.add(child3);
+//		dirStructure = new JTree(falsetop);
+//		dirStructure.setRootVisible(false);
+//		JScrollPane treeView = new JScrollPane(dirStructure);
+//		treeView.setPreferredSize(new Dimension(200,768));
+//		dirStructure.expandRow(1);
+//		dirStructure.expandRow(2);
+//				
+//				         
+//				
+//		frame.getContentPane().add(treeView, BorderLayout.WEST);
 		
 		// Add gridPane to JFrame -- gridPane holds the JLabel gridSpaceLabel
 		frame.getContentPane().add(gridPane, BorderLayout.CENTER);
@@ -208,49 +208,109 @@ public class GUI {
 
 		//Create the Main Menu Bar
 		menuBar = new JMenuBar();
-
-		//Create File Menu
-		menu = new JMenu("File");
-		menu.setMnemonic(KeyEvent.VK_F);
-		menu.getAccessibleContext().setAccessibleDescription(
-		        "File Menu");
+//
+//		//Create File Menu
+//		menu = new JMenu("File");
+//		menu.setMnemonic(KeyEvent.VK_F);
+//		menu.getAccessibleContext().setAccessibleDescription(
+//		        "File Menu");
+//	
+//		//Add menu items to File Menu
+//		menuItem = new JMenuItem("Save");
+//		//Create an action listener for the save item
+//		menuItem.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to save your current work!");
+//			}
+//		});
+//		menu.add(menuItem);
+//		
+//		
+//		menuItem = new JMenuItem("Load");
+//		//Create an action listener for the load item
+//		menuItem.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to load previous work!");
+//			}
+//		});
+//		menu.add(menuItem);
+//		
+//		
+//		menuItem = new JMenuItem("Import Module");
+//		//Create an action listener for the import module item
+//		menuItem.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to bring a previously made module into your current work!");
+//			}
+//		});
+//		menu.add(menuItem);
+//		
+//		
+//		menuItem = new JMenuItem("Export Module");
+//		//Create an action listener for the export module item
+//		menuItem.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to save your work as a module that may be integrated into other projects!");
+//			}
+//		});
+//		menu.add(menuItem);
+//		
+//		
+//		menuItem = new JMenuItem("Set Project Directory");
+//		//Create an action listener for the set project directory item
+//		menuItem.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to set the project directory to save and load your work!");
+//			}
+//		});
+//		menu.add(menuItem);
+//		
+//		//Add File Menu to Main Menu
+//		menuBar.add(menu);
+//		
+//		
+//		
+//		//Create Edit Menu
+//		menu = new JMenu("Edit");
+//		menu.setMnemonic(KeyEvent.VK_E);
+//		menu.getAccessibleContext().setAccessibleDescription(
+//		        "Edit Menu");
+//		
+//		menuItem = new JMenuItem("Options");
+//		
+//		//Create an action listener for the options item
+//		menuItem.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to set various preferences!");
+//			}
+//		});
+//		
+//		menu.add(menuItem);
+//		
+//		menuBar.add(menu);
+//		
+//		
+//		
+//		//Create View Menu
+//		menu = new JMenu("View");
+//		menu.setMnemonic(KeyEvent.VK_V);
+//		menu.getAccessibleContext().setAccessibleDescription(
+//		        "View Menu");
+//		
+//		menuItem = new JMenuItem("Toggle Side-Bar");
+//		
+//		//Create an action listener for the toggle side-bar item
+//		menuItem.addMouseListener(new MouseAdapter() {
+//			public void mousePressed(MouseEvent e) {
+//				JOptionPane.showMessageDialog(null, "In a future version you will be able to use this to close the file explorer menu!");
+//			}
+//		});
+//				
+//		menu.add(menuItem);
+//		
+//		menuBar.add(menu);
 		
-		//Add menu items to File Menu
-		menuItem = new JMenuItem("Save");
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Load");
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Import Module");
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Export Module");
-		menu.add(menuItem);
-		menuItem = new JMenuItem("Set Project Directory");
-		menu.add(menuItem);
 		
-		//Add File Menu to Main Menu
-		menuBar.add(menu);
-		
-		//Create Edit Menu
-		menu = new JMenu("Edit");
-		menu.setMnemonic(KeyEvent.VK_E);
-		menu.getAccessibleContext().setAccessibleDescription(
-		        "Edit Menu");
-		
-		menuItem = new JMenuItem("Options");
-		menu.add(menuItem);
-		
-		menuBar.add(menu);
-		
-		//Create View Menu
-		menu = new JMenu("View");
-		menu.setMnemonic(KeyEvent.VK_V);
-		menu.getAccessibleContext().setAccessibleDescription(
-		        "View Menu");
-		
-		menuItem = new JMenuItem("Toggle Side-Bar");
-		menu.add(menuItem);
-		
-		menuBar.add(menu);
 		
 		//Create Help Menu
 		menu = new JMenu("Help");
@@ -263,7 +323,7 @@ public class GUI {
 		menuItem.setMnemonic(KeyEvent.VK_A);
 		
 		
-		//Create an action listener for the about menu
+		//Create an action listener for the help item
 		menuItem.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				JLabel abouttext = new JLabel();
