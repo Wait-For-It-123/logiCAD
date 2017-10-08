@@ -185,7 +185,40 @@ public class GUI {
 				        add(scroller, BorderLayout.CENTER);
 				    }
 				     
-				 
+				    class ImageCoordAndType{
+				    	private int elementType;
+				    	private int centerImageX;
+				    	private int centerImageY;
+				    	private int upperLeftImageX;
+				    	private int upperLeftImageY;
+				    	private int upperLeftBufferX;
+				    	private int upperLeftBufferY;
+				    	
+				    	private String id;
+				    	
+				    	public ImageCoordAndType(int type, int upperLeftX, int upperLeftY) {
+				    		elementType = type;
+				    		upperLeftImageX = upperLeftX;
+				    		upperLeftImageY = upperLeftY;
+				    		centerImageX = upperLeftX + 50;
+				    		centerImageY = upperLeftY + 25;
+				    		upperLeftBufferX = upperLeftX - 20;
+				    		upperLeftBufferY = upperLeftY - 10;
+				    			
+				    	}
+				    	
+				    	String getID() {return id;}
+				    	void setID(String s) {id = s;}
+				   				    	
+				    	int getElementType() {return elementType;}
+						int getUpperLeftImageX() {return upperLeftImageX;}
+						int getUpperLeftImageY () {return upperLeftImageY;}
+						int getCenterImageX() {return centerImageX;}
+						int getCenterImageY() {return centerImageY;}
+						int getUpperLeftBufferX() {return upperLeftBufferX;}
+						int getUpperLeftBufferY() {return upperLeftBufferY;}
+				    }
+				    
 				    /** The component inside the scroll pane. */
 				    class DrawingPane extends JPanel {
 				        
@@ -314,6 +347,277 @@ public class GUI {
 				    }
 				 
 				    //Handle mouse events.
+				    public void mouseReleased(MouseEvent e) {
+				        final int W = 300;
+				        final int H = 300;
+				        
+				        boolean changed = false;
+				        if (SwingUtilities.isRightMouseButton(e)) {
+				            //This will clear the graphic objects.
+//				            circles.removeAllElements();
+//				            area.width=0;
+//				            area.height=0;
+				            changed = true;
+				        } else {
+				        	
+				            //int x = e.getX() - W/2;
+				            //int y = e.getY() - H/2;
+				    
+				      //no overlapping gates  
+				        	
+				        	CEBTypetemp = circuitElementButtonClicked;
+				        
+				        if(optionButtons == MOVE_BUTTON) {
+				        	
+				        }
+				        
+				        else if(optionButtons == DELETE_BUTTON) {
+				        	
+				        	System.out.println("I am here 1");
+				        	boolean b = false;
+				        	String id = "";
+				        	for (ImageCoordAndType temp : imageInfo) {
+				        		
+				        		int lowy = temp.getUpperLeftImageY()-20+25;
+				        		int lowx = temp.getUpperLeftImageX()-33+50-12;
+				        		int highy = temp.getUpperLeftImageY()+20+25;
+				        		int highx = temp.getUpperLeftImageX()+33+50+12;
+				        		
+
+				        		if ((((e.getX()<=highx) && (e.getX()>=lowx)) && ((e.getY()<=highy) && (e.getY()>=lowy)))) {
+				        			System.out.println("I am here");
+				        			circuitElementButtonClicked = INVALID;
+				        			id = temp.getID();
+				        			b = true;
+				        			
+				        		}
+				        	}
+				        	
+				        	if(b) {
+				        		
+				        		System.out.println("Deleted object: " + id);
+				        		model.removeCircuitElementHelper(id);
+				        		int indexToSave = 0;
+				        		for(int i = 0; i < imageInfo.size(); ++i) {
+				        			if(imageInfo.get(i).getID().equals(id)) {
+				        				indexToSave = i;
+				        				imageInfo.remove(i);
+				        			}
+				        		}
+				        		circuitElementImages.remove(indexToSave);
+				        		optionButtons = INVALID;
+				        	}
+			        		b = false;
+				        	
+				        	
+				        }
+				        
+				        else if(optionButtons == CONNECT_BUTTON) {
+				        	
+				        	boolean b = false;
+				        	String id = "";
+				        	for (ImageCoordAndType temp : imageInfo) {
+				        		
+				        		int lowy = temp.getUpperLeftImageY()-10;
+				        		int lowx = temp.getUpperLeftImageX()-20;
+				        		int highy=lowy+70;
+				        		int highx=lowx+140;
+				        		
+
+				        		if ((((e.getX()<=highx) && (e.getX()>=lowx)) && ((e.getY()<=highy) && (e.getY()>=lowy)))) {
+				        			circuitElementButtonClicked = INVALID;
+				        			id = temp.getID();
+				        			b = true;
+				        			
+				        		}
+				        	}
+				        	
+				        	if(b) {
+				        		
+				        		System.out.println(id);
+				        		parentID = id;
+				        		optionButtons = PARENT_SELECTED;
+				        	}
+			        		b = false;
+			        		
+			        		
+				       
+				        	
+				        }
+				        
+			        	else if(optionButtons == TOGGLE_INPUT_BUTTON) {
+                        
+                        String id = "";
+                        for (int i = 0; i < imageInfo.size(); i++) {
+                            
+                        	ImageCoordAndType temp = imageInfo.get(i);
+                            int lowy = temp.getUpperLeftImageY()-10;
+                            int lowx = temp.getUpperLeftImageX()-20;
+                            int highy=lowy+70;
+                            int highx=lowx+140;
+                            
+                            if ((((e.getX()<=highx) && (e.getX()>=lowx)) && ((e.getY()<=highy) && (e.getY()>=lowy)))) {
+                                circuitElementButtonClicked = INVALID;
+                                id = temp.getID();
+                                int newLogicValue = model.toggleInputFromID(id);
+                                
+                                if(newLogicValue == 1) {
+                                	circuitElementImages.remove(i);
+                                	circuitElementImages.add(i, elementImageTypes.get(INPUT_LOGIC_1));
+                                }
+                                
+                                if(newLogicValue == 0) {
+                                	circuitElementImages.remove(i);
+                                	circuitElementImages.add(i, elementImageTypes.get(INPUT_LOGIC_0));
+                                }
+                                
+                                if(newLogicValue == 1 || newLogicValue == 0) {
+                                    System.out.println("Input " + id + " toggled");
+                                }
+                                else {System.out.println("Error, non input selected");}
+                                
+                            	}
+                        	}
+			        	}
+				        
+				        else if(optionButtons == PARENT_SELECTED) {
+				        	
+				        	boolean b = false;
+				        	String id = "";
+				        	for (ImageCoordAndType temp : imageInfo) {
+				        		
+				        		int lowy = temp.getUpperLeftImageY()-10;
+				        		int lowx = temp.getUpperLeftImageX()-20;
+				        		int highy=lowy+70;
+				        		int highx=lowx+140;
+				        		
+
+				        		if ((((e.getX()<=highx) && (e.getX()>=lowx)) && ((e.getY()<=highy) && (e.getY()>=lowy)))) {
+				        			circuitElementButtonClicked = INVALID;
+				        			id = temp.getID();
+				        			b = true;
+				        			
+				        		}
+				        	}
+				        	
+				        	if(b) {
+				        		
+				        		System.out.println(id);
+				        		String childID = id;
+				        		boolean connectionSuccessful = model.makeConnectionFromIDs(parentID, childID);
+				        		if(connectionSuccessful) {
+				        			System.out.println("connection made between " + parentID + " and " + childID);
+				        			//model.printAllConnectionsForAllCircuitElements();
+				        		}
+				        		optionButtons = INVALID;
+				        		
+				        	}
+			        		b = false;
+			        		
+			        		
+				        	
+				        }
+				     	
+				        else { //General case
+				        	boolean b = false;
+				        	String id = "";
+				        	for (ImageCoordAndType temp : imageInfo) {
+				        		int clicklowx = e.getX()-50;
+				        		int clickhighx = e.getX()+50;
+				        		int clicklowy = e.getY()-25;
+				        		int clickhighy = e.getY()+25;
+				        		int lowy = temp.getUpperLeftImageY()-10;
+				        		int lowx = temp.getUpperLeftImageX()-20;
+				        		int highy=lowy+70;
+				        		int highx=lowx+140;
+				        		int bufferlowy = lowy-10;
+				        		int bufferlowx = lowx-20;
+				        		int bufferhighy= highy+10;
+				        		int bufferhighx= highx+20;
+				        		
+				        		
+				        		
+				        		if ((((clicklowx<=highx) && (clicklowx>=lowx)) && ((clicklowy<=highy) && (clicklowy>=lowy)))) {
+				        			circuitElementButtonClicked = INVALID;
+				        			id = temp.getID();
+				        			b = true;
+
+				  
+				        		}
+				        		if ((((clicklowx<=highx) && (clicklowx>=lowx)) && ((clickhighy<=highy) && (clickhighy>=lowy)))) {
+				        			circuitElementButtonClicked = INVALID;
+				        			id = temp.getID();
+				        			b = true;
+
+				        		}
+				        		if ((((clickhighx<=highx) && (clickhighx>=lowx)) && ((clicklowy<=highy) && (clicklowy>=lowy)))) {
+				        			circuitElementButtonClicked = INVALID;
+				        			id = temp.getID();
+				        			b = true;
+				        			
+				        			
+				        		}
+				        		if ((((clickhighx<=highx) && (clickhighx>=lowx)) && ((clickhighy<=highy) && (clickhighy>=lowy)))) {
+				        			circuitElementButtonClicked = INVALID;
+				        			id = temp.getID();
+				        			b = true;
+
+				        		}
+				        		
+				        		if(b) {System.out.println(id);}
+				        		b = false;
+				        	}//end for
+				        }//end else
+				        	
+
+				        	
+				      //end no overlap  	
+				            this.x = e.getX() - 50;
+				            this.y = e.getY() - 25;
+				            if (x < 0) x = 20;
+				            if (y < 0) y = 10;
+				            System.out.println(this.x);
+				            System.out.println(this.y);
+				            
+				            if(circuitElementButtonClicked!=INVALID) {
+				            	String newElementID = model.createandAddCircuitElement(circuitElementButtonClicked);
+					            circuitElementImages.add(elementImageTypes.get(circuitElementButtonClicked));
+					            ImageCoordAndType imageCoordType = new ImageCoordAndType(circuitElementButtonClicked, x, y);
+					            imageCoordType.setID(newElementID);
+					            imageInfo.add(imageCoordType);
+					            circuitElementButtonClicked = INVALID;
+				            }
+				            
+//				            Rectangle rect = new Rectangle(x, y, W, H);
+//				            circles.addElement(rect);
+//				            drawingPane.scrollRectToVisible(rect);
+				// 
+				            int this_width = (x + W + 2);
+				            if (this_width > area.width) {
+				                area.width = this_width; changed=true;
+				            }
+				 
+				            int this_height = (y + H + 2);
+				            if (this_height > area.height) {
+				                area.height = this_height; changed=true;
+				            }
+				        }
+				        if (changed) {
+				            //Update client's preferred size because
+				            //the area taken up by the graphics has
+				            //gotten larger or smaller (if cleared).
+				            drawingPane.setPreferredSize(area);
+				 
+				            //Let the scroll pane know to update itself
+				            //and its scrollbars.
+				            drawingPane.revalidate();
+				        }
+				        drawingPane.repaint();
+				    }
+				    public void mouseClicked(MouseEvent e){}
+				    public void mouseEntered(MouseEvent e){}
+				    public void mouseExited(MouseEvent e){}
+				    public void mousePressed(MouseEvent e){}
 				    
 				} // end class ScrollDemo2
 				
