@@ -685,14 +685,29 @@ public class GUI {
 				        		
 				        		System.out.println(id);
 				        		String childID = id;
-				        		boolean connectionSuccessful = model.makeConnectionFromIDs(parentID, childID);
-				        		if(connectionSuccessful) {
+				        		int connectionSuccessful = model.makeConnectionFromIDs(parentID, childID);
+				        		if(connectionSuccessful==7) {
 				        			System.out.println("connection made between " + parentID + " and " + childID);
 				        			//model.printAllConnectionsForAllCircuitElements();
 				        		}
 				        		
-				        		if(!connectionSuccessful) {
-				        			JOptionPane.showMessageDialog(frame, "Not a valid connection!");
+				        		if(connectionSuccessful == 1) {
+				        			JOptionPane.showMessageDialog(frame, "Can't connect a circuit element to itself!");
+				        		}
+				        		else if(connectionSuccessful == 2) {
+				        			JOptionPane.showMessageDialog(frame, "Can't add a connection into a predecessor (no feedback is allowed)!");
+				        		}
+				        		else if(connectionSuccessful == 3) {
+				        			JOptionPane.showMessageDialog(frame, "Can't make a connection in which Output element is source!");
+				        		}
+				        		else if(connectionSuccessful == 4) {
+				        			JOptionPane.showMessageDialog(frame, "Can't make a connection in which Input element is destination!");
+				        		}
+				        		else if(connectionSuccessful == 5) {
+				        			JOptionPane.showMessageDialog(frame, "Output element is already fully connected!");
+				        		}
+				        		else if(connectionSuccessful == 6) {
+				        			JOptionPane.showMessageDialog(frame, "The Gate is already fully connected!");
 				        		}
 				        		
 				        		optionButtons = INVALID;
@@ -1025,8 +1040,8 @@ public class GUI {
 		gates_and_io.add(button);
 		
 		button = new JButton("DELETE");
-		button.setPreferredSize(new Dimension(50, 38));
-		button.setToolTipText("<html> <font size=4> This button allows you to delete an existing circuit element in the workspace<br>All wires associated"
+		
+		button.setToolTipText("<html> <font size=4> This button allows you to delete an existing circuit element in the workspace<br>All wires associated "
 				+ "with the deleted circuit element will also be deleted<br> 1. "
 				+ "Click Delete <br> 2. Click desired circuit element</font> </html>");
 		button.addMouseListener(new MouseAdapter() {
@@ -1042,7 +1057,7 @@ public class GUI {
 		
 		button = new JButton("CONNECT");
 		button.setToolTipText("<html> <font size=4> This button allows you to connect two existing circuit elements with a wire in the workspace<br> 1. "
-				+ "Click Connect <br> 2. Click desired parent circuit element <br> 3. Click desired child circuit element.</font> </html>");
+				+ "Click Connect <br> 2. Click on desired source circuit element <br> 3. Click on desired destination circuit element.</font> </html>");
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -1061,7 +1076,7 @@ public class GUI {
 		
 		
 		 button = new JButton("TOGGLE INPUT");
-			button.setToolTipText("<html> <font size=4> This button lets you change the input signal for an Input.<br> 1. Click TOGGLE INPUT Button<br>2. Click the Input circuit element whose value you would like to change<br> 3. The Input value has now changed (from 0 to 1 or 1 to 0)</font> </html>");
+			button.setToolTipText("<html> <font size=4> This button lets you change the input signal for an Input.<br> 1. Click Toggle Input Button<br>2. Click the Input circuit element whose value you would like to change<br> 3. The Input value has now changed (from 0 to 1 or 1 to 0)</font> </html>");
 	        button.addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mousePressed(MouseEvent e) {
