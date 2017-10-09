@@ -59,7 +59,7 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
 
       i. This will create a local repository in the folder you created in step 1 whose root folder is named "logiCAD"
 6. Launch Eclipse and go to "File -> Open projects from File System"
-7. Click "Directory" and navigate to the "logiCAD" directory from step 5(i).
+7. Click "Directory" and navigate to the "logiCAD" directory from step 5(i). Select the directory "logiCAD" and click "OK"
 8. Click "Finish"
 9. In the project explorer, click the arrow to the left to expand the LogiCAD project directory
 10. Navigate to src.code.driver
