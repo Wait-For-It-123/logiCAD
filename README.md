@@ -16,7 +16,7 @@ Our target end-user for LogiCAD is a person who has working knowledge of digital
 These directions for running LogiCAD are for 64-bit machines running Windows 10 only.
 
 ### TO RUN THE LOGICAD PROGRAM (EXECUTABLE JAR FILE):
-1. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.1.0
+1. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.2.0
 
       i. Under the downloads section of this page download the executable jar file "logicad.jar"
 2. Download and install the Java Runtime Environment 8u144
@@ -65,3 +65,37 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
 10. Navigate to src.code.driver
 11. Right click on the file "driver.java" and select Run As -> Java Application
 12. The LogiCAD application should be launched 
+
+
+This code from an Oracle tutorial handles putting elements into the
+workspace.
+
+
+ Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
+ 
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 
+   - Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+ 
+   - Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+ 
+   - Neither the name of Oracle or the names of its
+     contributors may be used to endorse or promote products derived
+     from this software without specific prior written permission.
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+ IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
