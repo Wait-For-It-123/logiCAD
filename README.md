@@ -39,9 +39,9 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
       i. For the JRE, use this URL: http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html and download the Windows x64 offline download.
       
       ii. For the JDK, use this URL: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html and download the Java SE Development Kit 8u144 Windows x64 download.
-3. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.1.0
+3. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.2.0
 4. Under the downloads section download "Source code (zip)"
-5. Unzip the downloaded file "logicad-0.1.0.zip"
+5. Unzip the downloaded file "logicad-0.2.0.zip"
 6. Launch Eclipse and go to "File -> Open projects from File System"
 7. Click "Directory", navigate to the directory where you extracted the zip file and select it.
 8. Click "Finish"
@@ -67,9 +67,17 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
 12. The LogiCAD application should be launched 
 
 
-This code from an Oracle tutorial handles putting elements into the
-workspace.
 
+
+
+
+
+
+
+
+
+The following Copyright is from code we used from an Oracle tutorial that handles putting elements into the
+workspace:
 
  Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  
