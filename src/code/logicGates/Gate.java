@@ -12,8 +12,8 @@ public abstract class Gate implements In, Out {
 	protected int input1Value = INVALID;//gates have two inputs
 	protected int input2Value = INVALID;
 	protected int outputValue = INVALID;// gates have out output
-	protected ArrayList<Object> outputsIntoInputs1 = new ArrayList<Object>();
-	protected ArrayList<Object> outputsIntoInputs2 = new ArrayList<Object>();
+	protected ArrayList<Object> outputsIntoInputs1 = new ArrayList<Object>();//this array stores the destinations of a gates output which feeds into the destinations FIRST input
+	protected ArrayList<Object> outputsIntoInputs2 = new ArrayList<Object>();//this array stores the destinations of a gates output which feeds into the destinations SECOND input
 	
 	protected ArrayList<Object> familyTree = new ArrayList<Object>();  // A collection of all parents, grandparents, etc. of this gate
 	

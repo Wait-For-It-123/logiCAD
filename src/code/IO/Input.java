@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class Input implements code.logicGates.In{
 	private int value = 0;//value holds the signal of the input, 1 or 0
-	private ArrayList<Object> childrenInputs1 = new ArrayList<Object>();
-	private ArrayList<Object> childrenInputs2 = new ArrayList<Object>();
+	private ArrayList<Object> childrenInputs1 = new ArrayList<Object>();//this array stores the destinations of a gates output which feeds into the destinations FIRST input
+	private ArrayList<Object> childrenInputs2 = new ArrayList<Object>();//this array stores the destinations of a gates output which feeds into the destinations SECOND input
 	
 	private ArrayList<Object> familyTree = new ArrayList<Object>();  // A collection of all parents, grandparents, etc. of this gate
 																	 // For an input, this should always be an empty set (it can't have inputs).
