@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import code.logicGates.Gate;
 
 public class Output implements code.logicGates.In{
-	private int value = -1;
-	private Object inputSource = null;
+	private int value = -1;//value of output initialized to -1 for invalid
+	private Object inputSource = null;//initially has no source
 	private ArrayList<Object> familyTree = new ArrayList<Object>();  // A collection of all parents, grandparents, etc. of this gate
 	
-	private String id;
+	private String id;//id of output (out0, out1...)
 	
 	private int xCoord, yCoord;
 	
