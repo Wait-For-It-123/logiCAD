@@ -7,11 +7,11 @@ public abstract class Gate implements In, Out {
 	
 	protected static final int INVALID = -1;
 	protected static final int NOT = 3;
-	protected Object input1Source = null;
+	protected Object input1Source = null;//gates have two input sources
 	protected Object input2Source = null;
-	protected int input1Value = INVALID;
+	protected int input1Value = INVALID;//gates have two inputs
 	protected int input2Value = INVALID;
-	protected int outputValue = INVALID;
+	protected int outputValue = INVALID;// gates have out output
 	protected ArrayList<Object> outputsIntoInputs1 = new ArrayList<Object>();
 	protected ArrayList<Object> outputsIntoInputs2 = new ArrayList<Object>();
 	
