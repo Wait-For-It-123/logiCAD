@@ -199,7 +199,8 @@ public class GUI {
 				    
 				    /*
 				     * This class is used to store information on the location of any image and type in the workspace
-				     * this also takes into account the center coordinates...
+				     * this also takes into account the center coordinates and the upper left coordinates and upper left 
+				     * corner of buffer space
 				     */
 				    
 				    class ImageCoordAndType{
@@ -240,7 +241,16 @@ public class GUI {
 				    
 				 
 				    /** The component inside the scroll pane. */
+				    /*
+				     * This is the actual workspace where all circuit elements are placed.
+				     */
 				    class DrawingPane extends JPanel {
+				    	
+				    	/*
+				    	 * Overrides the original paint component. The paint override first starts by clearing everything then redraws
+				    	 * to show any changes in the workspace. It first draws circuit elements based on their locations, then we 
+				    	 * get all the connects then we draw the lines, three lines make up the wire. Finally we draw them to the screen.
+				    	 */
 				        
 				    	protected void paintComponent(Graphics g) {
 				            
@@ -421,7 +431,10 @@ public class GUI {
 
 				    }// end class
 				    		
-
+				    
+				    /*
+				     * Stores all the images into a container so that they may be accessed later.
+				     */
 				           
 				    public void initializeImageContainer() {
 				    	Image img = null;
@@ -550,22 +563,15 @@ public class GUI {
 				        boolean changed = false;
 				        if (SwingUtilities.isRightMouseButton(e)) {
 				            //This will clear the graphic objects.
-//				            circles.removeAllElements();
-//				            area.width=0;
-//				            area.height=0;
 				            changed = true;
 				        } else {
-				        	
-				            //int x = e.getX() - W/2;
-				            //int y = e.getY() - H/2;
-				    
-				      //no overlapping gates  
-				        	
+				        					        	
 				        CEBTypetemp = circuitElementButtonClicked;
 				        
-//				        if(optionButtons == MOVE_BUTTON) {
-//				        	
-//				        }
+				        /*
+				         * The following conditional statements are used to determine which button has been clicked
+				         * each button is handled in different ways based on what they need to accomplish
+				         */
 				        
 				        if(optionButtons == DELETE_BUTTON) {
 				        	
@@ -809,10 +815,6 @@ public class GUI {
 					            circuitElementButtonClicked = INVALID;
 				            }
 				            
-//				            Rectangle rect = new Rectangle(x, y, W, H);
-//				            circles.addElement(rect);
-//				            drawingPane.scrollRectToVisible(rect);
-				// 
 				            int this_width = (x + W + 2);
 				            if (this_width > area.width) {
 				                area.width = this_width; changed=true;
