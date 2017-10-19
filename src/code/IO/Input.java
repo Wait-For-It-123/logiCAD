@@ -4,16 +4,16 @@ package code.IO;
 import java.util.ArrayList;
 
 public class Input implements code.logicGates.In{
-	private int value = 0;
-	private ArrayList<Object> childrenInputs1 = new ArrayList<Object>();
-	private ArrayList<Object> childrenInputs2 = new ArrayList<Object>();
+	private int value = 0;//value holds the signal of the input, 1 or 0
+	private ArrayList<Object> childrenInputs1 = new ArrayList<Object>();//this array stores the destinations of a gates output which feeds into the destinations FIRST input
+	private ArrayList<Object> childrenInputs2 = new ArrayList<Object>();//this array stores the destinations of a gates output which feeds into the destinations SECOND input
 	
 	private ArrayList<Object> familyTree = new ArrayList<Object>();  // A collection of all parents, grandparents, etc. of this gate
 																	 // For an input, this should always be an empty set (it can't have inputs).
 	
-	private String id;
+	private String id; // the id string stores the type of element (in0, in1...)
 	
-	private int xCoord, yCoord;
+	private int xCoord, yCoord;//the location of the element in the workspace
 	
 	
 	/*setter for the input value.*/
@@ -45,9 +45,9 @@ public class Input implements code.logicGates.In{
 	public ArrayList<Object> getInput2Children() {
 		return childrenInputs2;
 	}
-	
+	/*gets the array list of the family tree*/
 	public ArrayList<Object> getFamilyTree(){ return familyTree; }
-	
+	/*adds to the family tree*/
 	public void addToFamilyTree(Object newRelative) { 
 		if(!familyTree.contains(newRelative)) {
 			familyTree.add(newRelative); 

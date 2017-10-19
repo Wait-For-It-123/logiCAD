@@ -80,8 +80,9 @@ import java.io.IOException;
 
 
 
+
 public class GUI {
-	
+	// These variables are used to figure out which image you have selected within the workspace.
 	private static final int INVALID = -1;
 	private static final int AND_BUTTON = 0;
 	private static final int OR_BUTTON = 1;
@@ -99,8 +100,9 @@ public class GUI {
 	private static final int OUTPUT_LOGIC_X = 12;
 	
 	private int CEBTypetemp = -1;
+	// Holds a value of the above variables to determine what was clicked in the workspace
 	private int circuitElementButtonClicked = INVALID;
-	
+	// Used to figure out which option button you have clicked in the GUI. The first variable will take on a value of one of the variables below
 	private int optionButtons = INVALID;
 	private static final int MOVE_BUTTON = 0;
 	private static final int DELETE_BUTTON = 1;
@@ -112,8 +114,9 @@ public class GUI {
 //	private JComponent contentPane;
 	
 
-	
+	// This is used to set the offset for drawing the wires to the appropriate input on the destination gate
 	private HashMap<String, Integer> parentLineOffsets = new HashMap<String, Integer>();
+	//Kepps track of all the wires
 	private ArrayList<Wire> wires = new ArrayList<Wire>();
 	
 	private Model model;
@@ -123,6 +126,8 @@ public class GUI {
 	}
 	
 	private JTree dirStructure;
+	
+	//Parent ID of a selected gate
 	public String parentID;
 	
 	public void run() {
@@ -145,15 +150,21 @@ public class GUI {
 // Some of the following code is borrowed from ScrollDemo2.java, a file from an Oracle Tutorial
 // See Copyright at beginning the of GUI.java above.
 // Tutorial is at the following URL: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ScrollDemo2Project/src/components/ScrollDemo2.java
-				
+/*
+ * The ScrollDemo2 Class creates a scroll pane with a drawing pane inside it in order to be able to click a gate button and draw into the workspace
+ * 				
+ */
 				class ScrollDemo2 extends JPanel implements MouseListener {
 				    
 					private Dimension area; //indicates area taken up by graphics
 				    private JPanel drawingPane;
 				    private int x;
 				    private int y;
+				    //List of all the images in the workspace
 				    private ArrayList<Image> circuitElementImages = new ArrayList<Image>();
+				    //List of all the possible types of images in the workspace
 				    private ArrayList<Image> elementImageTypes = new ArrayList<Image>();
+				    //List of coordinates and types of the images in the workspace
 				    private ArrayList<ImageCoordAndType> imageInfo = new ArrayList<ImageCoordAndType>();
 				    public ArrayList<Image> getCircuitElementImages(){return circuitElementImages;}
 				    public ArrayList<Image> getElementImageTypes(){return elementImageTypes;}
@@ -185,6 +196,12 @@ public class GUI {
 				        add(scroller, BorderLayout.CENTER);
 				    }
 				    
+				    
+				    /*
+				     * This class is used to store information on the location of any image and type in the workspace
+				     * this also takes into account the center coordinates and the upper left coordinates and upper left 
+				     * corner of buffer space
+				     */
 				    
 				    class ImageCoordAndType{
 				    	private int elementType;
@@ -224,7 +241,16 @@ public class GUI {
 				    
 				 
 				    /** The component inside the scroll pane. */
+				    /*
+				     * This is the actual workspace where all circuit elements are placed.
+				     */
 				    class DrawingPane extends JPanel {
+				    	
+				    	/*
+				    	 * Overrides the original paint component. The paint override first starts by clearing everything then redraws
+				    	 * to show any changes in the workspace. It first draws circuit elements based on their locations, then we 
+				    	 * get all the connects then we draw the lines, three lines make up the wire. Finally we draw them to the screen.
+				    	 */
 				        
 				    	protected void paintComponent(Graphics g) {
 				            
@@ -405,7 +431,10 @@ public class GUI {
 
 				    }// end class
 				    		
-
+				    
+				    /*
+				     * Stores all the images into a container so that they may be accessed later.
+				     */
 				           
 				    public void initializeImageContainer() {
 				    	Image img = null;
@@ -534,22 +563,15 @@ public class GUI {
 				        boolean changed = false;
 				        if (SwingUtilities.isRightMouseButton(e)) {
 				            //This will clear the graphic objects.
-//				            circles.removeAllElements();
-//				            area.width=0;
-//				            area.height=0;
 				            changed = true;
 				        } else {
-				        	
-				            //int x = e.getX() - W/2;
-				            //int y = e.getY() - H/2;
-				    
-				      //no overlapping gates  
-				        	
+				        					        	
 				        CEBTypetemp = circuitElementButtonClicked;
 				        
-//				        if(optionButtons == MOVE_BUTTON) {
-//				        	
-//				        }
+				        /*
+				         * The following conditional statements are used to determine which button has been clicked
+				         * each button is handled in different ways based on what they need to accomplish
+				         */
 				        
 				        if(optionButtons == DELETE_BUTTON) {
 				        	
@@ -793,10 +815,6 @@ public class GUI {
 					            circuitElementButtonClicked = INVALID;
 				            }
 				            
-//				            Rectangle rect = new Rectangle(x, y, W, H);
-//				            circles.addElement(rect);
-//				            drawingPane.scrollRectToVisible(rect);
-				// 
 				            int this_width = (x + W + 2);
 				            if (this_width > area.width) {
 				                area.width = this_width; changed=true;
