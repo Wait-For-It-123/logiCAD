@@ -6,11 +6,16 @@ import code.GUI.GUI;
 import code.IO.*;
 
 /**
- * @author Ian, Zack, Baqi
+ * @author Ian, Baqi
  *
  */
 public class Model {
-		
+	
+	/*
+	 * These variables represent the number to be used in forming the String id for the next gate of the particular type
+	 * to be created.
+	 * For example, if andGateNum is currently 2, and we create a new andGate object, its String id will be "and2"
+	 */
 	private int andGateNum = 0;
 	private int orGateNum = 0;
 	private int xorGateNum = 0;
@@ -20,6 +25,7 @@ public class Model {
 	private int nandGateNum = 0;
 	private int inputNum = 0;
 	private int outputNum = 0;
+	
 	
 	private ArrayList<Object> workspaceElements = new ArrayList<Object>();
 	private GUI gui;
@@ -592,6 +598,7 @@ public class Model {
 		return true;
 	}
 	
+	// Compares twos arraylists of type Integer to see if their elements are the same going from index i to length - 1
 	public static boolean areListsEqual(ArrayList<Integer> list1, ArrayList<Integer> list2) {
 		
 		if(list1.size() != list2.size()) {return false;}
@@ -603,7 +610,8 @@ public class Model {
 		return true;
 	}
 	
-	
+	// Adds the applicable objects to the workspace and sets its id
+	// id counters are incremented
 	public String addObjectToWorkspace(Object obj) {
 		workspaceElements.add(obj);
 		String id = "";
@@ -674,6 +682,7 @@ public class Model {
 		}
 	}
 	
+	// returns a string that lists all inputs and values
 	public String allInputsAndValuesToString() {
 		String inputString = "";
 		for(Object obj: workspaceElements) {
@@ -694,6 +703,7 @@ public class Model {
 		}
 	}
 	
+	// returns a string that lists all outputs and values
 	public String allOutputsAndValuesToString() {
 		String outputString = "";
 		for(Object obj: workspaceElements) {
@@ -752,6 +762,8 @@ public class Model {
 		
 	}
 	
+	
+// returns arraylist of all connections in circuit network(s)
 public ArrayList<Connection> queryAndGetConnections() {
 		
 		ArrayList<Connection> connections = new ArrayList<Connection>();
@@ -863,6 +875,7 @@ public ArrayList<Connection> queryAndGetConnections() {
 	}
 	
 	
+	// prints the ancestors of all circuit elements
 	public void printAllFamilyTrees() {
 		
 		System.out.println("Family Trees All Circuit Elements: ");
@@ -880,7 +893,7 @@ public ArrayList<Connection> queryAndGetConnections() {
 	}
 
 
-
+	// sets association relationship between model and gui
 	public void setGUI(GUI gui) {
 		this.gui = gui;
 		
@@ -910,6 +923,7 @@ public ArrayList<Connection> queryAndGetConnections() {
 		}
 	}
 	
+	// flips an input value from 1 to 0 or vice versa depending on the inputID
 	public int toggleInputFromID(String InputID) {
         Input Input1 = null;
         int found=-1;
@@ -950,7 +964,7 @@ public ArrayList<Connection> queryAndGetConnections() {
 		return outputVal;
 	}
 
-
+	// Allows a connection to be made based on the IDs of parent and child
 	public int makeConnectionFromIDs(String parentID, String childID) {
 		
 		Object parent = null;
