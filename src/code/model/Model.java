@@ -33,8 +33,41 @@ public class Model {
 	
 	public ArrayList<Object> getWorkspaceElements(){return workspaceElements;}
 	
-	
-	
+	/*
+	 * This method returns a String that lists all Gates, Inputs, and Outputs
+	 * that currently exist in the workspace (all elements that are
+	 * inside of workspaceElements ArrayList) by type and id.  The order of
+	 * listing the circuit elements does not matter.  
+	 * 
+	 * The String that you form should have the following format: 
+	 *
+	 * <object type of element_0><space><id of element_0>
+	 * <object type of element_1><space><id of element_1>
+	 *	.
+	 *	.
+	 *	.
+	 * <object type of element_n><space><id of element_n>
+	 * 
+	 * For example if two
+	 * andGate objects with ids "and0" and "and1", a single Input with id "in0",
+	 * and a single Output object with id "out0" currently reside in workspaceElements,
+	 * the String could look like:
+	 * 
+	 * andGate and0
+	 * andGate and1
+	 * Input in0
+	 * Output out0
+	 * 
+	 * *Note: this is not the only order that is valid, as order does not matter.
+	 * 
+	 */
+	public String workspaceElementsToString() {
+		String elementString = ""; 
+		
+		// Put your code here
+		
+		return elementString;
+	}
 	
 	
 	public void removeCircuitElementHelper(String id) {
@@ -997,6 +1030,15 @@ public ArrayList<Connection> queryAndGetConnections() {
 			}
 		}
 		return makeCircuitConnection(parent, child);
+		
+	}
+	
+	/*
+	 * Collaborator method stub for File Writer. Make this method write the passed in string
+	 * to a text file of arbitrary name. The file must end up in the current directory.
+	 */
+	
+	public void fileWriter(String string) {
 		
 	}
 	
