@@ -6,7 +6,7 @@ import code.GUI.GUI;
 import code.IO.*;
 
 /**
- * @author Ian, Baqi
+ * @author Ian, Baqi, Simran (Collaborator)
  *
  */
 public class Model {
