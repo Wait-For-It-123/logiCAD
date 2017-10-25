@@ -1225,7 +1225,6 @@ public class GUI {
 						continue;
 					}
 					String text = jButton.getText();
-					System.out.println(text);
 					try {
 						Integer integer = Integer.parseInt(text);
 						if (integer - 1 == toolSelection.getId() || integer == 9 && toolSelection == ToolSelection.OUTPUT_BUTTON){
