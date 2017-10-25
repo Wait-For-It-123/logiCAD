@@ -64,7 +64,23 @@ public class Model {
 	public String workspaceElementsToString() {
 		String elementString = ""; 
 		
-		// Put your code here
+        for(int i = 0; i < workspaceElements.size(); i++) {
+            if (i > 0) { //want to append a newline character to the subsequent iterations after the first element
+                elementString = elementString + "\n";
+            }
+            Object obj = workspaceElements.get(i);
+            // getSimpleName will only give the name of the class, not fully qualified name
+			elementString = elementString + obj.getClass().getSimpleName() + " ";
+			if(obj instanceof Gate) {
+				elementString = elementString + ((Gate) obj).getID();
+			}
+			else if(obj instanceof Input) {
+				elementString = elementString + ((Input) obj).getID();
+			}
+			else if(obj instanceof Output) {
+				elementString = elementString + ((Output) obj).getID();
+			}
+		}
 		
 		return elementString;
 	}
