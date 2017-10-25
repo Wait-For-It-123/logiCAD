@@ -36,28 +36,19 @@
 package code.GUI;
 
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.Line2D;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -70,20 +61,16 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultMutableTreeNode;
 
+import code.GUI.tools.ToolSelection;
+import code.GUI.tools.ToolSelectionDisplay;
 import code.model.Connection;
 import code.model.Model;
-
-import javax.swing.event.MouseInputAdapter;
-import java.io.IOException;
-
-
 
 
 public class GUI {
 	// These variables are used to figure out which image you have selected within the workspace.
-	private static final int INVALID = -1;
+	public static final int INVALID = -1;
 	private static final int AND_BUTTON = 0;
 	private static final int OR_BUTTON = 1;
 	private static final int NOT_BUTTON = 2;
@@ -98,7 +85,7 @@ public class GUI {
 	private static final int OUTPUT_LOGIC_0 = 10;
 	private static final int OUTPUT_LOGIC_1 = 11;
 	private static final int OUTPUT_LOGIC_X = 12;
-	
+
 	private int CEBTypetemp = -1;
 	// Holds a value of the above variables to determine what was clicked in the workspace
 	private int circuitElementButtonClicked = INVALID;
@@ -245,7 +232,22 @@ public class GUI {
 				     * This is the actual workspace where all circuit elements are placed.
 				     */
 				    class DrawingPane extends JPanel {
-				    	
+
+				    	public DrawingPane(){
+				    		super();
+							Executors.newSingleThreadExecutor().submit((Runnable) () -> {
+                                while (true){
+                                    try {
+                                        Thread.sleep(150);
+                                        repaint();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    repaint();
+                                }
+                            });
+						}
+
 				    	/*
 				    	 * Overrides the original paint component. The paint override first starts by clearing everything then redraws
 				    	 * to show any changes in the workspace. It first draws circuit elements based on their locations, then we 
@@ -257,20 +259,20 @@ public class GUI {
 				    		
 				    		Graphics2D g2 = (Graphics2D) g;
 				    		g2.clearRect(0, 0, this.getWidth(), this.getHeight());
-				    		
-				    		
+
+
 				    		super.paintComponent(g);
 
 				            for(int i = 0; i < circuitElementImages.size(); ++i) {
 				            	g.drawImage(circuitElementImages.get(i), imageInfo.get(i).getUpperLeftImageX(), imageInfo.get(i).getUpperLeftImageY(), null);
 				            }
-				            
-				            System.out.println(model.queryAndGetConnections());
+
+//							System.out.println(model.queryAndGetConnections());
 				            
 				            ArrayList<Connection> connections = model.queryAndGetConnections();
 				    		
-				            System.out.println(connections);
-				            System.out.println(model.queryAndGetConnections());
+//				            System.out.println(connections);
+//				            System.out.println(model.queryAndGetConnections());
 				            
 				            wires.clear();
 				            parentLineOffsets.clear();
@@ -426,7 +428,9 @@ public class GUI {
 				            	g2.draw(w.getLine2());
 				            	g2.draw(w.getLine3());
 				            }
-		
+
+							ToolSelectionDisplay.paint(g2, 10, 20);
+
 				    	}// end paint component method
 
 				    }// end class
@@ -589,7 +593,7 @@ public class GUI {
 
 				        		if ((((e.getX()<=highx) && (e.getX()>=lowx)) && ((e.getY()<=highy) && (e.getY()>=lowy)))) {
 				        			System.out.println("I am here");
-				        			circuitElementButtonClicked = INVALID;
+									circuitElementButtonClicked = INVALID;
 				        			id = temp.getID();
 				        			b = true;
 				        			
@@ -742,6 +746,7 @@ public class GUI {
 				        }
 				     	
 				        else if (circuitElementButtonClicked != INVALID){ //General case
+
 				        	boolean b = false;
 				        	String id = "";
 				        	for (ImageCoordAndType temp : imageInfo) {
@@ -877,7 +882,9 @@ public class GUI {
 		JToolBar gates_and_io = new JToolBar("Gates & I/O");
 		gates_and_io.setRollover(true);
 		
-		JButton button = new JButton();
+		JButton button = new JButton("1");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/And_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/and_with_text_small.png"));
@@ -895,7 +902,9 @@ public class GUI {
 		});
 		gates_and_io.add(button);
 		
-		button = new JButton();
+		button = new JButton("2");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Or_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/or_with_text_small.png"));
@@ -913,7 +922,9 @@ public class GUI {
 		});
 		gates_and_io.add(button);
 		
-		button = new JButton();
+		button = new JButton("3");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Not_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/not_with_text_small.png"));
@@ -931,7 +942,9 @@ public class GUI {
 		});
 		gates_and_io.add(button);
 		
-		button = new JButton();
+		button = new JButton("4");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Xor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/xor_with_text_small.png"));
@@ -949,7 +962,9 @@ public class GUI {
 		});
 		gates_and_io.add(button);
 		
-		button = new JButton();
+		button = new JButton("5");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Nand_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/nand_with_text_small.png"));
@@ -967,7 +982,9 @@ public class GUI {
 		});
 		gates_and_io.add(button);
 		
-		button = new JButton();
+		button = new JButton("6");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Nor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/nor_with_text_small.png"));
@@ -984,8 +1001,10 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		button = new JButton();
+
+		button = new JButton("7");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Xnor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/xnor_with_text_small.png"));
@@ -1005,7 +1024,9 @@ public class GUI {
 		
 		
 		
-		button = new JButton();
+		button = new JButton("8");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/input_small.png"));
 			button.setIcon(new ImageIcon(img));
@@ -1025,7 +1046,9 @@ public class GUI {
 		
 		
 	
-		button = new JButton();
+		button = new JButton("9");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/output_small.png"));
 			button.setIcon(new ImageIcon(img));
@@ -1107,14 +1130,16 @@ public class GUI {
 		
 		button = new JButton("CANCEL");
 		button.setToolTipText("<html> <font size=4> This button allows you to cancel any operation.</font> </html>");
-		button.addMouseListener(new MouseAdapter() {
+
+		MouseAdapter cancelMouseAdapter = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				System.out.println("I clicked the CANCEL Button");
 				circuitElementButtonClicked = INVALID;
 				optionButtons = INVALID;
 			}
-		});
+		};
+		button.addMouseListener(cancelMouseAdapter);
 		gates_and_io.add(button);
 		
 		button = new JButton("EVALUATE");
@@ -1179,7 +1204,42 @@ public class GUI {
 
 		});
 		gates_and_io.add(button);
-		
+
+		Executors.newSingleThreadExecutor().submit(() -> {
+			while (true){
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				for (Component component : gates_and_io.getComponents()){
+					if (!(component instanceof JButton)){
+						continue;
+					}
+					ToolSelection toolSelection = ToolSelectionDisplay.getSelectedTool();
+					if (toolSelection == null || toolSelection.isOption()){
+						continue;
+					}
+					JButton jButton = (JButton) component;
+					if (jButton.getIcon() == null){
+						continue;
+					}
+					String text = jButton.getText();
+					System.out.println(text);
+					try {
+						Integer integer = Integer.parseInt(text);
+						if (integer - 1 == toolSelection.getId() || integer == 9 && toolSelection == ToolSelection.OUTPUT_BUTTON){
+							jButton.setBackground(new Color(255, 245, 187));
+						} else {
+							jButton.setBackground(null);
+						}
+					} catch (NumberFormatException e){
+
+					}
+				}
+			}
+        });
+
 	
 		frame.getContentPane().add(gates_and_io, BorderLayout.NORTH);
 		
@@ -1295,109 +1355,11 @@ public class GUI {
 				abouttext.setVerticalTextPosition(SwingConstants.NORTH);
 				//abouttext.setPreferredSize(new Dimension(1300,768));
 				abouttext.setVerticalAlignment(SwingConstants.NORTH);
-				abouttext.setText("<html> <h3><font color = 'red'> Welcome to LogiCAD! </font></h3> <br>" +  
-						"LogiCAD is a digital circuit Computer-Aided Design application. " + 
-						"As you dive into our software you may notice several tools and menus at your disposal, so lets take a look at what we have to offer:<br>" +
-						"<br>" + 
-						"<br>" + 
-						"Top Menu Bar:<br>" + 
-						"<br>" + 
-						"-Help: Drop down menu of the following:<br>" + 
-						"<br>" + 
-						"&ensp;  &ensp;  About:&ensp;  Information about the software and button features.<br>" + 
-						"<br>" + 
-						"<br>" + 
-						"<br>" + 
-						"Gate and Operations Menu Bar:<br>" + 
-						"<br>" + 
-						"-AND Gate Button:&ensp;  An AND gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
-						"\r\n" + 
-						"-OR Gate Button:&ensp;  An OR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
-						"\r\n" + 
-						"-NOT Gate Button:&ensp;  A NOT gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given one input and will provide an output.<br>" + 
-						"\r\n" + 
-						"-XOR Gate Button:&ensp;  An XOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
-						"\r\n" + 
-						"-NAND Gate Button:&ensp;  A NAND gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
-						"\r\n" + 
-						"-NOR Gate Button:&ensp;  A NOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
-						"\r\n" + 
-						"-XNOR Gate Button:&ensp;  A XNOR gate will appear on the grid workspace for a user to be able to work with. This logic gate must be given two inputs and will provide an output.<br>" + 
-						"\r\n" + 
-						"-Input Gate Button:&ensp;  An Input circuit element will appear in the workspace. It will appear, by default, with a 0 inside signifying the signal it will produce. It can be toggled to a 1 using the Toggle Input button.<br>" + 
-						"\r\n" + 
-						"-Output Gate Button:&ensp;  An Output circuit element will appear in the workspace. It will appear, by default, with nothing inside of it signifying that no signals have been propagated to it. It will change to a 0 or 1<br>"
-						+ "when the Evaluate button is clicked and there are no errors. If errors are present, an \'X\' will appear in the output.<br>" +
-						"\r\n" +
-						"-Delete Button:&ensp;  The delete button allows the user to delete a single circuit element in the workspace. When deleted, any connections to that circuit element will be erased, including the wires.<br>" +
-						"\r\n" +
-						"-Connect Button:&ensp;  The connect button allows the user to connect two circuit elements. To make a proper connection the user must first click connect and then select an input<br>"
-						+ "or source gate (gate whose output does not have a connection). Then the user should select the destination gate (gate that has a free input). When both have been selected a connection<br>"
-						+ "will have been made and a wire will be drawn between them. NOTE: To prevent wires from drawing over other circuit elements or wires the circuit elements must be laid out in a manner<br>"
-						+ "such that the path (using 90 degree angles) has no circuit elements.<br>" +
-						"\r\n" +
-						"-Toggle Input:&ensp;  The toggle input button is specifically used to toggle the Input circuit element to be either a 0 or a 1. This will be the value of the signal that propagates through the circuit.<br>" +
-						"\r\n" +
-						"-Cancel Button:&ensp;  The cancel button will invalidate any button selection or current operation.<br>" +
-						"\r\n" +
-						"-Evaluate Button:&ensp;  The Evaluate button will propagate the signal(s) through the circuit and display the output in the output circuit elements as a 0 or 1. For the evaluate button to trigger the<br>"
-						+ "propagation there must be no dangling wires and each gate must be fulle connected(no free inputs or outputs). If there are, an error window will popup and the outputs are set to \'X\', signifying that<br>"
-						+ "there are errors in the workspace.<br>" +
-						"<br>" +
-						"-This gate menu bar is able to be moved around. By clicking the very left of the bar, a user can drag the menu bar all around and place it wherever one wishes.<br>" +
-						" If a user decides to even take the menu bar outside the window they may do so. When they click the exit button the bar will go back to where it last was.<br>" +
-						"<br>" + 
-						"<br>" + 
-						"<br>" +
-						"Grid Workspace:<br>" + 
-						"<br>" + 
-						"-This is the area where circuit elements are placed. Circuit elements can be placed freely in the workspace. As more elements are added the workspace will expand to the right and down as needed.<br>"
-						+ "To navigate the workspace move the scroll bars that appear on the bottom and right of the workspace." +
-						"<br>" +
-						"<br>" +
-						"Making Circuits:<br>" +
-						"<br>" +
-						"-Making proper circuits in LogiCAD involves following a couple of contraints.<br>"
-						+ "&ensp; 1. When making conections click the source gate first and the target gate second.<br>"
-						+ "&ensp; 2. Inputs can not be the target of a connection.<br>"
-						+ "&ensp; 3. Outputs can not be the source of a connection.<br>"
-						+ "&ensp; 4. Feedback loops are not allowed. Meaning that the target of a connection can not be a gate that is an input to the source.<br>" +
-						"<br>" +
-						"<br>" +
-						"<br>" +
-						"<br>" +
-						"<br>" + 
-						"Some of the code used in this program has been adapted from an Oracle tutorial and"+
-						" file ScrollDemo2.java, for which the following Copyright and conditions apply: <br><br>"+
-						" Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.<br>" + 
-						" <br>" + 
-						" Redistribution and use in source and binary forms, with or without<br>" + 
-						" modification, are permitted provided that the following conditions<br>" + 
-						" are met:<br>" + 
-						" <br>" + 
-						"   - Redistributions of source code must retain the above copyright<br>" + 
-						"     notice, this list of conditions and the following disclaimer.<br>" + 
-						" <br>" + 
-						"   - Redistributions in binary form must reproduce the above copyright<br>" + 
-						"     notice, this list of conditions and the following disclaimer in the<br>" + 
-						"     documentation and/or other materials provided with the distribution.<br>" + 
-						" <br>" + 
-						"   - Neither the name of Oracle or the names of its<br>" + 
-						"     contributors may be used to endorse or promote products derived<br>" + 
-						"     from this software without specific prior written permission.<br>" + 
-						" <br>" + 
-						" THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS<br>" + 
-						" IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,<br>" + 
-						" THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR<br>" + 
-						" PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR<br>" + 
-						" CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,<br>" + 
-						" EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,<br>" + 
-						" PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR<br>" + 
-						" PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF<br>" + 
-						" LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING<br>" + 
-						" NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS<br>" + 
-						" SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<br>" + 
-						"<br>" );
+				try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("Guide.html")))) {
+					abouttext.setText(String.join("", bufferedReader.lines().collect(Collectors.toList())));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 								
 					
 						
@@ -1430,6 +1392,20 @@ public class GUI {
 		frame.setVisible(true);
 			
 	} // end run method
-	
 
-} // end class GUI 
+	public int getCircuitElementButtonClicked() {
+		return circuitElementButtonClicked;
+	}
+
+	public void setCircuitElementButtonClicked(int circuitElementButtonClicked) {
+		this.circuitElementButtonClicked = circuitElementButtonClicked;
+	}
+
+	public int getOptionButtons() {
+		return optionButtons;
+	}
+
+	public void setOptionButtons(int optionButtons) {
+		this.optionButtons = optionButtons;
+	}
+} // end class GUI
