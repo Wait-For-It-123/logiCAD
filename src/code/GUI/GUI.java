@@ -438,7 +438,7 @@ public class GUI {
 				           
 				    public void initializeImageContainer() {
 				    	Image img = null;
-				    	for(int i = 0; i < 13; ++i) {
+				    	for(int i = 0; i < 26; ++i) {
 				    		switch (i) {
 				    			case 0:
 				    				
@@ -548,7 +548,113 @@ public class GUI {
 				    	    		}
 				    				elementImageTypes.add(img);
 				        			break;
-				    			
+				    	        case 13:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/and_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 14:
+                                
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/or_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 15:
+                                
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/not_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 16:
+                                
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/xor_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 17:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/nand_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 18:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/nor_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 19:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/xnor_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 20:
+                                try {
+                                img = ImageIO.read(getClass().getResource("images/input_0_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 21:
+                                try {
+                                img = ImageIO.read(getClass().getResource("images/input_1_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 22:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/output_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 23:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/output_0_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 24:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/output_1_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
+                            case 25:
+                                try {
+                                    img = ImageIO.read(getClass().getResource("images/output_x_white.png"));
+                                } catch (IOException exp) {
+                                    exp.printStackTrace();
+                                }
+                                elementImageTypes.add(img);
+                                break;
 				    		}
 				    			
 				    	}
