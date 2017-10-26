@@ -732,7 +732,7 @@ public class GUI {
 				        			JOptionPane.showMessageDialog(frame, "The Gate is already fully connected!");
 				        		}
 				        		
-				        		optionButtons = INVALID;
+				        		optionButtons = CONNECT_BUTTON;
 				        		
 				        	}
 			        		b = false;
