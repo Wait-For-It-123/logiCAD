@@ -678,19 +678,17 @@ public class GUI {
 				    public void highlightImage(int index) {
 				        ImageCoordAndType imageToBeToggled = imageInfo.get(index);
 				        if (imageToBeToggled.elementType < AND_HIGHLIGHTED) {
-				            imageToBeToggled.elementType += AND_HIGHLIGHTED;
+				            int imageType =imageToBeToggled.elementType + AND_HIGHLIGHTED;
 				            circuitElementImages.remove(index);
-				            circuitElementImages.add(index, elementImageTypes.get(imageToBeToggled.elementType));
+				            circuitElementImages.add(index, elementImageTypes.get(imageType));
 				        }
 				    }
 				    
 				    public void unhighlightImage(int index) {
                         ImageCoordAndType imageToBeToggled = imageInfo.get(index);
-                        if (imageToBeToggled.elementType >= AND_HIGHLIGHTED) {
-                            imageToBeToggled.elementType -= AND_HIGHLIGHTED;
-                            circuitElementImages.remove(index);
-                            circuitElementImages.add(index, elementImageTypes.get(imageToBeToggled.elementType));
-                        }
+                        int imageType = imageToBeToggled.elementType;
+                        circuitElementImages.remove(index);
+                        circuitElementImages.add(index, elementImageTypes.get(imageType));
                     }
 				    
 				    public int firstIndexByID(String id) {
