@@ -97,7 +97,7 @@ public class GUI {
 	private static final int CANCEL_BUTTON = 3;
 	private static final int PARENT_SELECTED = 4;
 	private static final int TOGGLE_INPUT_BUTTON = 5;
-	
+
 //	private JComponent contentPane;
 	
 
@@ -736,7 +736,7 @@ public class GUI {
 				        			JOptionPane.showMessageDialog(frame, "The Gate is already fully connected!");
 				        		}
 				        		
-				        		optionButtons = INVALID;
+				        		optionButtons = CONNECT_BUTTON;
 				        		
 				        	}
 			        		b = false;
@@ -744,7 +744,7 @@ public class GUI {
 			        		
 				        	
 				        }
-				     	
+
 				        else if (circuitElementButtonClicked != INVALID){ //General case
 
 				        	boolean b = false;
@@ -1205,40 +1205,73 @@ public class GUI {
 		});
 		gates_and_io.add(button);
 
-		Executors.newSingleThreadExecutor().submit(() -> {
-			while (true){
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				for (Component component : gates_and_io.getComponents()){
-					if (!(component instanceof JButton)){
-						continue;
-					}
-					ToolSelection toolSelection = ToolSelectionDisplay.getSelectedTool();
-					if (toolSelection == null || toolSelection.isOption()){
-						continue;
-					}
-					JButton jButton = (JButton) component;
-					if (jButton.getIcon() == null){
-						continue;
-					}
-					String text = jButton.getText();
-					try {
-						Integer integer = Integer.parseInt(text);
-						if (integer - 1 == toolSelection.getId() || integer == 9 && toolSelection == ToolSelection.OUTPUT_BUTTON){
-							jButton.setBackground(new Color(255, 245, 187));
-						} else {
-							jButton.setBackground(null);
-						}
-					} catch (NumberFormatException e){
 
+		button = new JButton("CLEAR ALL");
+
+		button.setToolTipText("<html> <font size=4> This button allows you to clear all of the existing circuit elements from the workspace.</font> </html>");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				circuitElementButtonClicked = INVALID;
+
+				// show alert
+				if (!newContentPane.imageInfo.isEmpty()) {
+					int confirmResult = JOptionPane.showConfirmDialog(null,
+							"Are you sure you would like to clear the current workspace? All existing circuits will be destroyed.",
+							"Clear Confirmation", JOptionPane.YES_NO_OPTION);
+
+					if (confirmResult == JOptionPane.YES_OPTION) {
+						newContentPane.imageInfo.forEach(i -> model.removeCircuitElementHelper(i.id));
+
+						newContentPane.circuitElementImages.clear();
+						newContentPane.imageInfo.clear();
+
+						newContentPane.revalidate();
+
+						newContentPane.repaint();
 					}
 				}
+				else {
+					JOptionPane.showMessageDialog(null,"No circuits to clear!","Empty Workspace", JOptionPane.INFORMATION_MESSAGE);
+				}
+				optionButtons = INVALID;
 			}
-        });
+		});
+		gates_and_io.add(button);
 
+      Executors.newSingleThreadExecutor().submit(() -> {
+    while (true){
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      for (Component component : gates_and_io.getComponents()){
+        if (!(component instanceof JButton)){
+          continue;
+        }
+        ToolSelection toolSelection = ToolSelectionDisplay.getSelectedTool();
+        if (toolSelection == null || toolSelection.isOption()){
+          continue;
+        }
+        JButton jButton = (JButton) component;
+        if (jButton.getIcon() == null){
+          continue;
+        }
+        String text = jButton.getText();
+        try {
+          Integer integer = Integer.parseInt(text);
+          if (integer - 1 == toolSelection.getId() || integer == 9 && toolSelection == ToolSelection.OUTPUT_BUTTON){
+            jButton.setBackground(new Color(255, 245, 187));
+          } else {
+            jButton.setBackground(null);
+          }
+        } catch (NumberFormatException e){
+
+        }
+      }
+    }
+      });
 	
 		frame.getContentPane().add(gates_and_io, BorderLayout.NORTH);
 		
