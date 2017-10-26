@@ -44,4 +44,10 @@ public class Connection {
 	public String getParentID() {return parentID;}
 	public String getChildID() {return childID;}
 	public int getInputType() {return inputType;}
+
+
+	@Override
+	public String toString() {
+		return "Connection{ parentID='" + parentID + ", childID='" + childID + ", inputType=" + inputType + '}';
+	}
 }
