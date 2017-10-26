@@ -1,13 +1,6 @@
 package code.model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import code.logicGates.*;
 import code.GUI.GUI;
 import code.IO.*;
@@ -1044,21 +1037,9 @@ public ArrayList<Connection> queryAndGetConnections() {
 	 * Collaborator method stub for File Writer. Make this method write the passed in string
 	 * to a text file of arbitrary name. The file must end up in the current directory.
 	 */
-
-	/**
-	 *
-	 * Writes the contents {@code string} to
-	 * 		fileName: ./{current date in this format: "yyyy-MM-dd HH-mm-ss"}
-	 *
-	 * @param string Content to write to file.
-	 */
-	public static void fileWriter(String string) {
-		try (PrintWriter printWriter = new PrintWriter("./" + new File(new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date())))){
-			printWriter.print(string);
-			//Try resource block. Does not need closing of resources.
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	
+	public void fileWriter(String string) {
+		
 	}
 	
 	
