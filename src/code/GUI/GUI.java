@@ -97,7 +97,21 @@ public class GUI {
 	private static final int OUTPUT_BUTTON = 9;
 	private static final int OUTPUT_LOGIC_0 = 10;
 	private static final int OUTPUT_LOGIC_1 = 11;
-	private static final int OUTPUT_LOGIC_X = 12;
+    private static final int OUTPUT_LOGIC_X = 12;
+    private static final int AND_HIGHLIGHTED = 13;
+    private static final int OR_HIGHLIGHTED = 14;
+    private static final int NOT_HIGHLIGHTED = 15;
+    private static final int XOR_HIGHLIGHTED = 16;
+    private static final int NAND_HIGHLIGHTED = 17;
+    private static final int NOR_HIGHLIGHTED = 18;
+    private static final int XNOR_HIGHLIGHTED = 19;
+    private static final int INPUT_HIGHLIGHTED = 20;
+    private static final int INPUT_LOGIC_0_HIGHLIGHTED = 21;
+    private static final int INPUT_LOGIC_1_HIGHLIGHTED = 22;
+    private static final int OUTPUT_HIGHLIGHTED = 23;
+    private static final int OUTPUT_LOGIC_0_HIGHLIGHTED = 24;
+    private static final int OUTPUT_LOGIC_1_HIGHLIGHTED = 25;
+    private static final int OUTPUT_LOGIC_X_HIGHLIGHTED = 26;
 	
 	private int CEBTypetemp = -1;
 	// Holds a value of the above variables to determine what was clicked in the workspace
@@ -660,7 +674,48 @@ public class GUI {
 				    	}
 				    	
 				    }
-				 
+				    
+				    public void highlightImage(int index) {
+				        ImageCoordAndType imageToBeToggled = imageInfo.get(index);
+				        if (imageToBeToggled.elementType < AND_HIGHLIGHTED) {
+				            imageToBeToggled.elementType += AND_HIGHLIGHTED;
+				            circuitElementImages.remove(index);
+				            circuitElementImages.add(index, elementImageTypes.get(imageToBeToggled.elementType));
+				        }
+				    }
+				    
+				    public void unhighlightImage(int index) {
+                        ImageCoordAndType imageToBeToggled = imageInfo.get(index);
+                        if (imageToBeToggled.elementType >= AND_HIGHLIGHTED) {
+                            imageToBeToggled.elementType -= AND_HIGHLIGHTED;
+                            circuitElementImages.remove(index);
+                            circuitElementImages.add(index, elementImageTypes.get(imageToBeToggled.elementType));
+                        }
+                    }
+				    
+				    public int firstIndexByID(String id) {
+				        for (int i = 0; i < imageInfo.size(); i++) {
+                            ImageCoordAndType imageToBeToggled = imageInfo.get(i);
+                            if (imageToBeToggled.getID().equals(id)) {
+                                return i;
+                            }
+                        }
+				        return -1;
+				    }
+				    
+				    public void unhighlightParent() {
+				        if (parentID == null) {
+				            return;
+				        }
+				        int parentIndex = firstIndexByID(parentID);
+				        if(parentIndex != -1) {
+				            unhighlightImage(parentIndex);
+				            this.revalidate();
+				            this.repaint();
+				        }
+				        parentID = null;
+				    }
+				    
 				    //Handle mouse events.
 				    public void mouseReleased(MouseEvent e) {
 				        final int W = 300;
@@ -725,6 +780,7 @@ public class GUI {
 				        	
 				        	boolean b = false;
 				        	String id = "";
+				        	int index = 0;
 				        	for (ImageCoordAndType temp : imageInfo) {
 				        		
 				        		int lowy = temp.getUpperLeftImageY()-10;
@@ -737,8 +793,9 @@ public class GUI {
 				        			circuitElementButtonClicked = INVALID;
 				        			id = temp.getID();
 				        			b = true;
-				        			
+				        			highlightImage(index);
 				        		}
+				        		index++;
 				        	}
 				        	
 				        	if(b) {
@@ -793,6 +850,8 @@ public class GUI {
 				        	
 				        	boolean b = false;
 				        	String id = "";
+				        	int index = 0;
+				        	int parentIndex = -1;
 				        	for (ImageCoordAndType temp : imageInfo) {
 				        		
 				        		int lowy = temp.getUpperLeftImageY()-10;
@@ -800,18 +859,23 @@ public class GUI {
 				        		int highy=lowy+70;
 				        		int highx=lowx+140;
 				        		
-
+				        		
+				        		if (temp.getID().equals(parentID)) {
+                                    parentIndex = index;
+				        		}
+				        		
 				        		if ((((e.getX()<=highx) && (e.getX()>=lowx)) && ((e.getY()<=highy) && (e.getY()>=lowy)))) {
 				        			circuitElementButtonClicked = INVALID;
 				        			id = temp.getID();
 				        			b = true;
 				        			
 				        		}
+				        		index++;
 				        	}
 				        	
 				        	if(b) {
-				        		
 				        		System.out.println(id);
+				        		unhighlightImage(parentIndex);
 				        		String childID = id;
 				        		int connectionSuccessful = model.makeConnectionFromIDs(parentID, childID);
 				        		if(connectionSuccessful==7) {
@@ -996,6 +1060,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = AND_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the AND Button " + circuitElementButtonClicked);
 			}
 		});
@@ -1014,6 +1079,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = OR_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the OR Button " + circuitElementButtonClicked);
 			}
 		});
@@ -1032,6 +1098,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = NOT_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the NOT Button");
 			}
 		});
@@ -1050,6 +1117,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = XOR_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the XOR Button");
 			}
 		});
@@ -1068,6 +1136,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = NAND_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the NAND Button");
 			}
 		});
@@ -1086,6 +1155,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = NOR_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the NOR Button");
 			}
 		});
@@ -1104,6 +1174,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = XNOR_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the XNOR Button");
 			}
 		});
@@ -1124,6 +1195,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = INPUT_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the INPUT Button");
 			}
 		});
@@ -1144,6 +1216,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = OUTPUT_BUTTON;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 				System.out.println("I clicked the OUTPUT Button");
 			}
 		});
@@ -1175,6 +1248,7 @@ public class GUI {
 				
 				optionButtons = DELETE_BUTTON;
 				circuitElementButtonClicked = INVALID;
+				newContentPane.unhighlightParent();
 			}
 		});
 		gates_and_io.add(button);
@@ -1189,7 +1263,7 @@ public class GUI {
 				
 				optionButtons = CONNECT_BUTTON;
 				circuitElementButtonClicked = INVALID;
-				
+				newContentPane.unhighlightParent();
 				//test
 				model.printAllFamilyTrees();
 				//end test
@@ -1207,6 +1281,7 @@ public class GUI {
 	                System.out.println("I clicked the TOGGLE Button");
 	                optionButtons = TOGGLE_INPUT_BUTTON;
 	                circuitElementButtonClicked = INVALID;
+	                newContentPane.unhighlightParent();
 	            }
 	        });
 	    gates_and_io.add(button);
@@ -1219,6 +1294,7 @@ public class GUI {
 				System.out.println("I clicked the CANCEL Button");
 				circuitElementButtonClicked = INVALID;
 				optionButtons = INVALID;
+				newContentPane.unhighlightParent();
 			}
 		});
 		gates_and_io.add(button);
@@ -1231,7 +1307,7 @@ public class GUI {
 				System.out.println("I clicked the EVALUATE Button");
 				circuitElementButtonClicked = INVALID;
 				boolean canWeEvaluate = model.evaluateCircuitNetwork();
-				
+				newContentPane.unhighlightParent();
 				if(canWeEvaluate) {
 					
 					for(int i = 0; i < newContentPane.getImageInfo().size(); ++i) {
@@ -1396,6 +1472,7 @@ public class GUI {
 		//Create an action listener for the about menu
 		menuItem.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+			    newContentPane.unhighlightParent();
 				JLabel abouttext = new JLabel();
 				abouttext.setHorizontalTextPosition(SwingConstants.CENTER);
 				abouttext.setVerticalTextPosition(SwingConstants.NORTH);
