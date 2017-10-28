@@ -1,0 +1,13 @@
+and0
+or0
+in0
+out0
+and1
+in1
+and0 and1
+in0 and0
+in0 or0
+and1 out0
+or0 and1
+in1 and0
+in1 or0

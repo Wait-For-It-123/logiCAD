@@ -69,6 +69,118 @@ public class Model {
 		return elementString;
 	}
 	
+	/*
+	 * ids of workspace elements
+	 * Forward connections of elements
+	 * Note: locations of elements are in the GUI
+	 */
+	public String serializeModelData() {
+		String modelData = "";
+		String idData = "";
+		String connectionData1 = "";
+		String connectionData2 = "";
+		
+		// Capture ids of circuit elements in serialization String
+		for(int i = 0; i < workspaceElements.size(); ++i) {
+			Object obj = workspaceElements.get(i);
+			if(obj instanceof Gate) {
+				Gate g = (Gate) obj;
+				idData += g.getID() + "%n";
+			}
+			else if(obj instanceof Input) {
+				Input in = (Input) obj;
+				idData += in.getID() + "%n";
+			}
+			else if(obj instanceof Output) {
+				Output out = (Output) obj;
+				idData += out.getID() + "%n";
+			}
+		}
+		
+		// Serialize Forward connections in circuit networks
+		// A forward connection is stored as follows:
+		// and0 or3
+		// The above means there that in the forward connection between and0 and or3
+		// that and0 is the parent and or3 is the child
+		for(int i = 0; i < workspaceElements.size(); ++i) {
+			Object obj = workspaceElements.get(i);
+			if(obj instanceof Gate) {
+				Gate g = (Gate) obj;
+				for(int j = 0; j < g.getChildren_Inputs1().size(); ++j) {
+					Object childObject = g.getChildren_Inputs1().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData1 += g.getID() + " " + childGate.getID() + "%n";
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData1 += g.getID() + " " + inChild.getID() + "%n";
+						
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData1 += g.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+				for(int j = 0; j < g.getChildren_Inputs2().size(); ++j) {
+					Object childObject = g.getChildren_Inputs2().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData2 += g.getID() + " " + childGate.getID() + "%n";
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData2 += g.getID() + " " + inChild.getID() + "%n";	
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData2 += g.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+			}
+			else if(obj instanceof Input) {
+				Input in = (Input) obj;
+				for(int j = 0; j < in.getInput1Children().size(); ++j) {
+					Object childObject = in.getInput1Children().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData1 += in.getID() + " " + childGate.getID() + "%n";
+						
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData1 += in.getID() + " " + inChild.getID() + "%n";
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData1 += in.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+				for(int j = 0; j < in.getInput2Children().size(); ++j) {
+					Object childObject = in.getInput2Children().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData2 += in.getID() + " " + childGate.getID() + "%n";
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData2 += in.getID() + " " + inChild.getID() + "%n";
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData2 += in.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+				
+			}
+		}
+		
+		modelData = idData + connectionData1 + connectionData2;
+		
+		
+		return modelData;
+	}
+	
 	
 	public void removeCircuitElementHelper(String id) {
 		
