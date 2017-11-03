@@ -235,17 +235,17 @@ public class GUI {
 
 				    	public DrawingPane(){
 				    		super();
-							Executors.newSingleThreadExecutor().submit((Runnable) () -> {
-                                while (true){
-                                    try {
-                                        Thread.sleep(150);
-                                        repaint();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    repaint();
-                                }
-                            });
+//							Executors.newSingleThreadExecutor().submit((Runnable) () -> {
+//                                while (true){
+//                                    try {
+//                                        Thread.sleep(150);
+//                                        repaint();
+//                                    } catch (InterruptedException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    repaint();
+//                                }
+//                            });
 						}
 
 				    	/*
@@ -429,7 +429,7 @@ public class GUI {
 				            	g2.draw(w.getLine3());
 				            }
 
-							ToolSelectionDisplay.paint(g2, 10, 20);
+//							ToolSelectionDisplay.paint(g2, 10, 20);
 
 				    	}// end paint component method
 
