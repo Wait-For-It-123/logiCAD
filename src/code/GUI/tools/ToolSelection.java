@@ -51,6 +51,7 @@ public enum ToolSelection {
         if (id == -1){
             return INVALID;
         }
+
         return Arrays.stream(values()).filter(gateSelection -> gateSelection.id == id && gateSelection.option == option).findAny().orElse(null);
     }
 

@@ -89,6 +89,7 @@ public class GuiObserver {
                 ToolSelectionDisplay.setTool(ToolSelection.getSelectedGate(tool, false));
             }
 
+            
         }
     }
 

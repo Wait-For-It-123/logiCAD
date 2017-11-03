@@ -33,6 +33,7 @@ public class ToolSelectionDisplay {
         String displayDebugText = "Selected Tool: ";
         displayDebugText += (selectedGate != null ? selectedGate.toString() : "NONE");
         g2.drawString(displayDebugText, x, y);
+
     }
 
 }
