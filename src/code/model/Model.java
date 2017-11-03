@@ -1,13 +1,6 @@
 package code.model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
 import code.logicGates.*;
 import code.GUI.GUI;
 import code.IO.*;
@@ -71,7 +64,23 @@ public class Model {
 	public String workspaceElementsToString() {
 		String elementString = ""; 
 		
-		// Put your code here
+        for(int i = 0; i < workspaceElements.size(); i++) {
+            if (i > 0) { //want to append a newline character to the subsequent iterations after the first element
+                elementString = elementString + "\n";
+            }
+            Object obj = workspaceElements.get(i);
+            // getSimpleName will only give the name of the class, not fully qualified name
+			elementString = elementString + obj.getClass().getSimpleName() + " ";
+			if(obj instanceof Gate) {
+				elementString = elementString + ((Gate) obj).getID();
+			}
+			else if(obj instanceof Input) {
+				elementString = elementString + ((Input) obj).getID();
+			}
+			else if(obj instanceof Output) {
+				elementString = elementString + ((Output) obj).getID();
+			}
+		}
 		
 		return elementString;
 	}
@@ -1044,21 +1053,9 @@ public ArrayList<Connection> queryAndGetConnections() {
 	 * Collaborator method stub for File Writer. Make this method write the passed in string
 	 * to a text file of arbitrary name. The file must end up in the current directory.
 	 */
-
-	/**
-	 *
-	 * Writes the contents {@code string} to
-	 * 		fileName: ./{current date in this format: "yyyy-MM-dd HH-mm-ss"}
-	 *
-	 * @param string Content to write to file.
-	 */
-	public static void fileWriter(String string) {
-		try (PrintWriter printWriter = new PrintWriter("./" + new File(new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date())))){
-			printWriter.print(string);
-			//Try resource block. Does not need closing of resources.
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	
+	public void fileWriter(String string) {
+		
 	}
 	
 	
