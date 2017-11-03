@@ -14,13 +14,13 @@ import code.logicGates.*;
 
 public class driver {
 	
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {	
+	
 		//javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
 		Model m = new Model();
 		GUI gui = new GUI(m);
 		new GuiObserver(gui);
 		m.setGUI(gui);
 		gui.run();
-
 	}
 }

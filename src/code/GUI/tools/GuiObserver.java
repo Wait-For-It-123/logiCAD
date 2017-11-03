@@ -75,7 +75,7 @@ public class GuiObserver {
         Executors.newSingleThreadExecutor().submit(this::observe);
     }
 
-    public void observe(){
+    private void observe(){
         while (true){ //Observe until JVM exits.
             try {
                 Thread.sleep(100);
