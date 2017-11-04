@@ -209,14 +209,16 @@ public void loadStateFromString(String state) {
     	for(String s: tokens_images) {
     		System.out.println(s);
     		String[] imageInf = s.split(" ");
-    		System.out.println(imageInf[0]);
-    		System.out.println(imageInf[1]);
-    		System.out.println(imageInf[2]);
-    		System.out.println(imageInf[3]);
-    		ImageCoordAndType ict = new ImageCoordAndType(Integer.valueOf(imageInf[0]), Integer.valueOf(imageInf[1]), Integer.valueOf(imageInf[2]));
-    		ict.setID(imageInf[3]);
-    		imageInfo.add(ict);
-    		circuitElementImages.add(elementImageTypes.get(Integer.valueOf(imageInf[0])));
+    		if(imageInf.length == 4) {
+	    		System.out.println(imageInf[0]);
+	    		System.out.println(imageInf[1]);
+	    		System.out.println(imageInf[2]);
+	    		System.out.println(imageInf[3]);
+	    		ImageCoordAndType ict = new ImageCoordAndType(Integer.valueOf(imageInf[0]), Integer.valueOf(imageInf[1]), Integer.valueOf(imageInf[2]));
+	    		ict.setID(imageInf[3]);
+	    		imageInfo.add(ict);
+	    		circuitElementImages.add(elementImageTypes.get(Integer.valueOf(imageInf[0])));
+    		}
     		
     	}
     	
@@ -1265,7 +1267,7 @@ public void loadStateFromString(String state) {
 					errorDialog.setVerticalTextPosition(SwingConstants.NORTH);
 					errorDialog.setVerticalAlignment(SwingConstants.NORTH);
 					errorDialog.setText("<html> <font size=4> The circuit has missing connections and cannot be evaluated! Please complete the circuit.<br>All output values will now be set to X </font></html>");
-					JOptionPane.showMessageDialog(null,errorDialog, "Error!", 0, null);
+					JOptionPane.showMessageDialog(frame,errorDialog, "Error!", 0, null);
 					
 					//elementImageTypes
 					
@@ -1442,6 +1444,7 @@ public void loadStateFromString(String state) {
 
 		        }		
 			}
+			
 		});
 		
 		menu.add(menuItem);
