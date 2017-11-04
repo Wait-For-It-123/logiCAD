@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import code.logicGates.*;
 import code.GUI.GUI;
 import code.IO.*;
+import code.GUI.ImageCoordAndType;
+import java.awt.Image;
 
 /**
  * @author Ian, Baqi, Simran (Collaborator)
@@ -67,6 +69,12 @@ public class Model {
 		// Put your code here
 		
 		return elementString;
+	}
+	
+	
+	public void imageCoordHelper(int type, int x, int y) {
+		
+		gui.getImageInfo().add(new ImageCoordAndType(type, x, y));
 	}
 	
 	/*
@@ -175,7 +183,16 @@ public class Model {
 			}
 		}
 		
-		modelData = idData + connectionData1 + connectionData2;
+		// int type, int upperLeftX, int upperLeftY) {
+		String imageInfoString = "";
+		// Serialize imageInfo data
+		for(ImageCoordAndType imgCT: gui.getImageInfo()) {
+			imageInfoString = imageInfoString + imgCT.getElementType() + " " + 
+					imgCT.getUpperLeftImageX() + " " + imgCT.getUpperLeftImageY() + "%n";
+		}
+		
+		
+		modelData = idData + "%n" + connectionData1 + connectionData2 + "%n" + imageInfoString;
 		
 		
 		return modelData;

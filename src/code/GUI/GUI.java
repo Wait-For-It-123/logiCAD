@@ -37,6 +37,7 @@ package code.GUI;
 
 
 import java.awt.BasicStroke;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,6 +50,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +60,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -74,6 +77,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import code.model.Connection;
 import code.model.Model;
+import code.GUI.ImageCoordAndType;
+import code.fileio.CustomFilter;
+import code.fileio.FileInputAndOutput;
 
 import javax.swing.event.MouseInputAdapter;
 import java.io.IOException;
@@ -110,6 +116,18 @@ public class GUI {
 	private static final int CANCEL_BUTTON = 3;
 	private static final int PARENT_SELECTED = 4;
 	private static final int TOGGLE_INPUT_BUTTON = 5;
+	
+	//List of all the images in the workspace
+    private ArrayList<Image> circuitElementImages = new ArrayList<Image>();
+    //List of all the possible types of images in the workspace
+    private ArrayList<Image> elementImageTypes = new ArrayList<Image>();
+    //List of coordinates and types of the images in the workspace
+    private ArrayList<ImageCoordAndType> imageInfo = new ArrayList<ImageCoordAndType>();
+    
+    public ArrayList<Image> getCircuitElementImages(){return circuitElementImages;}
+    public ArrayList<Image> getElementImageTypes(){return elementImageTypes;}
+    public ArrayList<ImageCoordAndType> getImageInfo(){return imageInfo;}
+
 	
 //	private JComponent contentPane;
 	
@@ -160,15 +178,15 @@ public class GUI {
 				    private JPanel drawingPane;
 				    private int x;
 				    private int y;
-				    //List of all the images in the workspace
-				    private ArrayList<Image> circuitElementImages = new ArrayList<Image>();
-				    //List of all the possible types of images in the workspace
-				    private ArrayList<Image> elementImageTypes = new ArrayList<Image>();
-				    //List of coordinates and types of the images in the workspace
-				    private ArrayList<ImageCoordAndType> imageInfo = new ArrayList<ImageCoordAndType>();
-				    public ArrayList<Image> getCircuitElementImages(){return circuitElementImages;}
-				    public ArrayList<Image> getElementImageTypes(){return elementImageTypes;}
-				    public ArrayList<ImageCoordAndType> getImageInfo(){return imageInfo;}
+//				    //List of all the images in the workspace
+//				    private ArrayList<Image> circuitElementImages = new ArrayList<Image>();
+//				    //List of all the possible types of images in the workspace
+//				    private ArrayList<Image> elementImageTypes = new ArrayList<Image>();
+//				    //List of coordinates and types of the images in the workspace
+//				    private ArrayList<ImageCoordAndType> imageInfo = new ArrayList<ImageCoordAndType>();
+//				    public ArrayList<Image> getCircuitElementImages(){return circuitElementImages;}
+//				    public ArrayList<Image> getElementImageTypes(){return elementImageTypes;}
+//				    public ArrayList<ImageCoordAndType> getImageInfo(){return imageInfo;}
 				    public JPanel getDrawingPane() {return drawingPane;}
 
 
@@ -197,46 +215,46 @@ public class GUI {
 				    }
 				    
 				    
-				    /*
-				     * This class is used to store information on the location of any image and type in the workspace
-				     * this also takes into account the center coordinates and the upper left coordinates and upper left 
-				     * corner of buffer space
-				     */
-				    
-				    class ImageCoordAndType{
-				    	private int elementType;
-				    	private int centerImageX;
-				    	private int centerImageY;
-				    	private int upperLeftImageX;
-				    	private int upperLeftImageY;
-				    	private int upperLeftBufferX;
-				    	private int upperLeftBufferY;
-				    	
-				    	private String id;
-				    	
-				    	public ImageCoordAndType(int type, int upperLeftX, int upperLeftY) {
-				    		elementType = type;
-				    		upperLeftImageX = upperLeftX;
-				    		upperLeftImageY = upperLeftY;
-				    		centerImageX = upperLeftX + 50;
-				    		centerImageY = upperLeftY + 25;
-				    		upperLeftBufferX = upperLeftX - 20;
-				    		upperLeftBufferY = upperLeftY - 10;
-				    			
-				    	}
-				    	
-				    	String getID() {return id;}
-				    	void setID(String s) {id = s;}
-				   				    	
-				    	int getElementType() {return elementType;}
-						int getUpperLeftImageX() {return upperLeftImageX;}
-						int getUpperLeftImageY () {return upperLeftImageY;}
-						int getCenterImageX() {return centerImageX;}
-						int getCenterImageY() {return centerImageY;}
-						int getUpperLeftBufferX() {return upperLeftBufferX;}
-						int getUpperLeftBufferY() {return upperLeftBufferY;}
-				    }
-				    
+//				    /*
+//				     * This class is used to store information on the location of any image and type in the workspace
+//				     * this also takes into account the center coordinates and the upper left coordinates and upper left 
+//				     * corner of buffer space
+//				     */
+//				    
+//				    class ImageCoordAndType{
+//				    	private int elementType;
+//				    	private int centerImageX;
+//				    	private int centerImageY;
+//				    	private int upperLeftImageX;
+//				    	private int upperLeftImageY;
+//				    	private int upperLeftBufferX;
+//				    	private int upperLeftBufferY;
+//				    	
+//				    	private String id;
+//				    	
+//				    	public ImageCoordAndType(int type, int upperLeftX, int upperLeftY) {
+//				    		elementType = type;
+//				    		upperLeftImageX = upperLeftX;
+//				    		upperLeftImageY = upperLeftY;
+//				    		centerImageX = upperLeftX + 50;
+//				    		centerImageY = upperLeftY + 25;
+//				    		upperLeftBufferX = upperLeftX - 20;
+//				    		upperLeftBufferY = upperLeftY - 10;
+//				    			
+//				    	}
+//				    	
+//				    	String getID() {return id;}
+//				    	void setID(String s) {id = s;}
+//				   				    	
+//				    	int getElementType() {return elementType;}
+//						int getUpperLeftImageX() {return upperLeftImageX;}
+//						int getUpperLeftImageY () {return upperLeftImageY;}
+//						int getCenterImageX() {return centerImageX;}
+//						int getCenterImageY() {return centerImageY;}
+//						int getUpperLeftBufferX() {return upperLeftBufferX;}
+//						int getUpperLeftBufferY() {return upperLeftBufferY;}
+//				    }
+//				    
 				    
 				    
 				 
@@ -1128,22 +1146,22 @@ public class GUI {
 				
 				if(canWeEvaluate) {
 					
-					for(int i = 0; i < newContentPane.getImageInfo().size(); ++i) {
-						if(newContentPane.getImageInfo().get(i).getElementType() == 9) {
-							String id = newContentPane.getImageInfo().get(i).getID();
+					for(int i = 0; i < getImageInfo().size(); ++i) {
+						if(getImageInfo().get(i).getElementType() == 9) {
+							String id = getImageInfo().get(i).getID();
 							int outValue = model.getOutputValueFromID(id);
 							
 							if(outValue == 0) {
-								newContentPane.getCircuitElementImages().remove(i);
-								newContentPane.getCircuitElementImages().add(i, newContentPane.getElementImageTypes().get(10));
+								getCircuitElementImages().remove(i);
+								getCircuitElementImages().add(i, getElementImageTypes().get(10));
 								newContentPane.getDrawingPane().revalidate();
 								newContentPane.getDrawingPane().repaint();
 					        
 							}
 							
 							if(outValue == 1) {
-								newContentPane.getCircuitElementImages().remove(i);
-								newContentPane.getCircuitElementImages().add(i, newContentPane.getElementImageTypes().get(11));
+								getCircuitElementImages().remove(i);
+								getCircuitElementImages().add(i, getElementImageTypes().get(11));
 								newContentPane.getDrawingPane().revalidate();
 								newContentPane.getDrawingPane().repaint();
 							}
@@ -1162,10 +1180,10 @@ public class GUI {
 					
 					//elementImageTypes
 					
-					for(int i = 0; i < newContentPane.getImageInfo().size(); ++i) {
-						if(newContentPane.getImageInfo().get(i).getElementType() == OUTPUT_BUTTON) {
-							newContentPane.getCircuitElementImages().remove(i);
-							newContentPane.getCircuitElementImages().add(i, newContentPane.getElementImageTypes().get(12));
+					for(int i = 0; i < getImageInfo().size(); ++i) {
+						if(getImageInfo().get(i).getElementType() == OUTPUT_BUTTON) {
+							getCircuitElementImages().remove(i);
+							getCircuitElementImages().add(i, getElementImageTypes().get(12));
 							newContentPane.getDrawingPane().revalidate();
 							newContentPane.getDrawingPane().repaint();
 						}
@@ -1231,16 +1249,61 @@ public class GUI {
 		// DO NOT REMOVE THIS COMMENTED OUT CODE BELOW
 
 //		//Create File Menu
-//		menu = new JMenu("File");
-//		menu.setMnemonic(KeyEvent.VK_F);
-//		menu.getAccessibleContext().setAccessibleDescription(
-//		        "File Menu");
+		menu = new JMenu("File");
+		menu.setMnemonic(KeyEvent.VK_F);
+		menu.getAccessibleContext().setAccessibleDescription(
+		        "File Menu");
 //		
 //		//Add menu items to File Menu
-//		menuItem = new JMenuItem("Save");
-//		menu.add(menuItem);
-//		menuItem = new JMenuItem("Load");
-//		menu.add(menuItem);
+		menuItem = new JMenuItem("Save");
+		
+		JFileChooser fc = new JFileChooser();
+		CustomFilter cf = new CustomFilter();
+		fc.setFileFilter(cf);
+		fc.setAcceptAllFileFilterUsed(false);
+		
+		//Create an action listener for save
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				
+				
+				int returnVal = fc.showSaveDialog(frame);
+				
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File file = fc.getSelectedFile();
+		            System.out.println("File chosen");
+		        }
+				
+				FileInputAndOutput fileio = new FileInputAndOutput();
+				String state = model.serializeModelData();
+				String path = "save1.txt";
+				fileio.saveStateToFile(state, path);
+						
+			}
+		});
+		
+		menu.add(menuItem);
+		menuItem = new JMenuItem("Load");
+		
+		//Create an action listener for load
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+			
+				int returnVal = fc.showOpenDialog(frame);
+				
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File file = fc.getSelectedFile();
+		            System.out.println("File chosen");
+		        }
+							
+			}
+		});
+		
+		
+		
+		
+		
+		menu.add(menuItem);
 //		menuItem = new JMenuItem("Import Module");
 //		menu.add(menuItem);
 //		menuItem = new JMenuItem("Export Module");
@@ -1249,7 +1312,7 @@ public class GUI {
 //		menu.add(menuItem);
 //		
 //		//Add File Menu to Main Menu
-//		menuBar.add(menu);
+		menuBar.add(menu);
 //		
 //		//Create Edit Menu
 //		menu = new JMenu("Edit");

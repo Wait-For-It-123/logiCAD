@@ -43,6 +43,8 @@ public class driver {
 //		m.makeConnectionFromIDs("or0", "and1");
 //		m.makeConnectionFromIDs("and1", "out0");
 //		
+//		m.imageCoordHelper(0, 40, 100);
+//		m.imageCoordHelper(4, 150, 13);
 //		
 //		FileInputAndOutput fileio = new FileInputAndOutput();
 //		String state = m.serializeModelData();
