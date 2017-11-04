@@ -1190,7 +1190,7 @@ public class GUI {
 
 				// show alert
 				if (!newContentPane.imageInfo.isEmpty()) {
-					int confirmResult = JOptionPane.showConfirmDialog(null,
+					int confirmResult = JOptionPane.showConfirmDialog(frame,
 							"Are you sure you would like to clear the current workspace? All existing circuits will be destroyed.",
 							"Clear Confirmation", JOptionPane.YES_NO_OPTION);
 
@@ -1206,7 +1206,7 @@ public class GUI {
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null,"No circuits to clear!","Empty Workspace", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(frame,"No circuits to clear!","Empty Workspace", JOptionPane.INFORMATION_MESSAGE);
 				}
 				optionButtons = INVALID;
 			}
