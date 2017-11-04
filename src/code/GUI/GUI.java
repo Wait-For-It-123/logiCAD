@@ -36,14 +36,7 @@
 package code.GUI;
 
 
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -72,18 +65,19 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import code.GUI.tools.ToolSelection;
+import code.GUI.tools.ToolSelectionDisplay;
 import code.model.Connection;
 import code.model.Model;
 
 import javax.swing.event.MouseInputAdapter;
 import java.io.IOException;
-
-
+import java.util.concurrent.Executors;
 
 
 public class GUI {
 	// These variables are used to figure out which image you have selected within the workspace.
-	private static final int INVALID = -1;
+	public static final int INVALID = -1;
 	private static final int AND_BUTTON = 0;
 	private static final int OR_BUTTON = 1;
 	private static final int NOT_BUTTON = 2;
@@ -259,7 +253,6 @@ public class GUI {
 				     * This is the actual workspace where all circuit elements are placed.
 				     */
 				    class DrawingPane extends JPanel {
-				    	
 				    	/*
 				    	 * Overrides the original paint component. The paint override first starts by clearing everything then redraws
 				    	 * to show any changes in the workspace. It first draws circuit elements based on their locations, then we 
@@ -440,7 +433,6 @@ public class GUI {
 				            	g2.draw(w.getLine2());
 				            	g2.draw(w.getLine3());
 				            }
-		
 				    	}// end paint component method
 
 				    }// end class
@@ -1044,8 +1036,10 @@ public class GUI {
 		
 		JToolBar gates_and_io = new JToolBar("Gates & I/O");
 		gates_and_io.setRollover(true);
-		
-		JButton button = new JButton();
+
+		JButton button = new JButton("1");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/And_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/and_with_text_small.png"));
@@ -1063,8 +1057,10 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		button = new JButton();
+
+		button = new JButton("2");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Or_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/or_with_text_small.png"));
@@ -1082,8 +1078,10 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		button = new JButton();
+
+		button = new JButton("3");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Not_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/not_with_text_small.png"));
@@ -1101,8 +1099,10 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		button = new JButton();
+
+		button = new JButton("4");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Xor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/xor_with_text_small.png"));
@@ -1120,8 +1120,10 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		button = new JButton();
+
+		button = new JButton("5");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Nand_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/nand_with_text_small.png"));
@@ -1139,8 +1141,10 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		button = new JButton();
+
+		button = new JButton("6");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Nor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/nor_with_text_small.png"));
@@ -1158,8 +1162,10 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		button = new JButton();
+
+		button = new JButton("7");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		button.setToolTipText("<html><img src=" + getClass().getResource("images/Xnor_Gate_Truth_Table.jpg") + "</html>");
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/xnor_with_text_small.png"));
@@ -1177,10 +1183,12 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		
-		
-		button = new JButton();
+
+
+
+		button = new JButton("8");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/input_small.png"));
 			button.setIcon(new ImageIcon(img));
@@ -1198,10 +1206,12 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
-		
-	
-		button = new JButton();
+
+
+
+		button = new JButton("9");
+		button.setVerticalTextPosition(SwingConstants.TOP);
+		button.setHorizontalTextPosition(SwingConstants.CENTER);
 		try {
 			Image img = ImageIO.read(getClass().getResource("images/output_small.png"));
 			button.setIcon(new ImageIcon(img));
@@ -1219,7 +1229,39 @@ public class GUI {
 			}
 		});
 		gates_and_io.add(button);
-		
+		Executors.newSingleThreadExecutor().submit(() -> {
+			while (true){
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				for (Component component : gates_and_io.getComponents()){
+					if (!(component instanceof JButton)){
+						continue;
+					}
+					ToolSelection toolSelection = ToolSelectionDisplay.getSelectedTool();
+					if (toolSelection == null || toolSelection.isOption()){
+						continue;
+					}
+					JButton jButton = (JButton) component;
+					if (jButton.getIcon() == null){
+						continue;
+					}
+					String text = jButton.getText();
+					try {
+						Integer integer = Integer.parseInt(text);
+						if (integer - 1 == toolSelection.getId() || integer == 9 && toolSelection == ToolSelection.OUTPUT_BUTTON){
+							jButton.setBackground(new Color(255, 245, 187));
+						} else {
+							jButton.setBackground(null);
+						}
+					} catch (NumberFormatException e){
+
+					}
+				}
+			}
+		});
 		//Add hover to tell user what the following buttons do:
 //		button = new JButton("MOVE");
 //		button.setToolTipText("<html> <font size=4> This button allows you to move an existing circuit element in the workspace<br> 1. "
@@ -1644,6 +1686,20 @@ public class GUI {
 		frame.setVisible(true);
 			
 	} // end run method
-	
 
-} // end class GUI 
+	public void setCircuitElementButtonClicked(int circuitElementButtonClicked) {
+		this.circuitElementButtonClicked = circuitElementButtonClicked;
+	}
+
+	public void setOptionButtons(int optionButtons) {
+		this.optionButtons = optionButtons;
+	}
+
+	public int getCircuitElementButtonClicked() {
+		return circuitElementButtonClicked;
+	}
+
+	public int getOptionButtons() {
+		return optionButtons;
+	}
+} // end class GUI
