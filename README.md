@@ -1,5 +1,5 @@
 # LogiCAD
-Test
+
 Team project for CSE442 - Software Engineering at University at Buffalo, Fall 2017.
 
 LogiCAD is a Computer-Aided Design application for creating digtial circuits using seven basic logic gates: AND, OR, NOT, XOR, NAND, NOR, and XNOR.  LogiCAD provides the user with a visual interface with which to interact with the circuit building blocks, making the design process easier.  Testing of the circuit is achieved by changing input signal values; the output signal values of the circuit are then calculated through appropriate signal propagation, allowing the user to verify circuit correctness.
