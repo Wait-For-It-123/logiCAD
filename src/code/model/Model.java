@@ -277,7 +277,7 @@ public class Model {
 		}
 		
 		
-		modelData = idData + "@" + connectionData1 + connectionData2 +"@"+ counts +"@" + imageInfoString;
+		modelData = idData + "@" + connectionData1 + connectionData2 +"@"+ counts +"@" + imageInfoString + "@" + allInputsAndValuestoString0();
 		
 		
 		return modelData;
@@ -933,6 +933,17 @@ public class Model {
 				System.out.println("Input Identity:" + i + ", Name: " + i.getID() +  ", Value: " + i.getInputValue());
 			}
 		}
+	}
+	
+	public String allInputsAndValuestoString0() {
+		String ans = "";
+		for(Object obj: workspaceElements) {
+			if(obj.getClass() == Input.class) {
+				Input i = (Input) obj;
+				ans = ans + i.getID() + " " + i.getInputValue() + "%n";
+			}
+		}
+		return ans;
 	}
 	
 	// returns a string that lists all inputs and values

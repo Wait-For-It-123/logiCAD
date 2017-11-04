@@ -231,6 +231,47 @@ public class GUI {
     		
     	}
     	
+    	// tokens[4] is input IDs and Values
+    	String[] tokens_input_values = tokens[4].split("\n");
+    	System.out.println(tokens_input_values);
+    	for(String s: tokens_input_values) {
+    		String[] input_pair = s.split(" ");
+    		if(input_pair.length == 2) {
+    			for(Object o: model.getWorkspaceElements()) {
+    				if(o instanceof Input) {
+    					if(((Input)o).getID().equals(input_pair[0])) {
+    						((Input)o).setInputValue(Integer.valueOf(input_pair[1]));
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	for(int i = 0; i < circuitElementImages.size(); i++) {
+    		
+    		if(imageInfo.get(i).getElementType() == 7 ) {
+    			String id = imageInfo.get(i).getID();
+    			for(Object o: model.getWorkspaceElements()) {
+    				if(o instanceof Input) {
+    					if(((Input)o).getID().equals(id)){
+    						if(((Input)o).getInputValue() == 1) {
+    			            	circuitElementImages.remove(i);
+    			            	circuitElementImages.add(i, elementImageTypes.get(INPUT_LOGIC_1));
+    			            }
+    			            
+    			            if(((Input)o).getInputValue() == 0) {
+    			            	circuitElementImages.remove(i);
+    			            	circuitElementImages.add(i, elementImageTypes.get(INPUT_LOGIC_0));
+    			            }
+    					}
+    				}
+    			}
+    		}
+    		
+    		
+    	}
+    	
+    	
     	model.printAllWorkspaceElements();
     	model.printAllConnectionsForAllCircuitElements();
 	}
@@ -1360,6 +1401,7 @@ public class GUI {
 //		
 //		//Add menu items to File Menu
 		menuItem = new JMenuItem("Save");
+		menuItem.setToolTipText("Save current design as .lca file. Note: Circuit(s) will be saved in unevaluated state.");
 		
 		JFileChooser fc = new JFileChooser();
 		CustomFilter cf = new CustomFilter();
@@ -1428,6 +1470,7 @@ public class GUI {
 		
 		menu.add(menuItem);
 		menuItem = new JMenuItem("Load");
+		menuItem.setToolTipText("Load a .lca file.");
 		
 		//Create an action listener for load
 		menuItem.addMouseListener(new MouseAdapter() {
