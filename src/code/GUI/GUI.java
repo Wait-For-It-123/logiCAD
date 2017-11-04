@@ -38,6 +38,8 @@ package code.GUI;
 
 import java.awt.BasicStroke;
 
+
+import code.logicGates.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -78,6 +80,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import code.model.Connection;
 import code.model.Model;
 import code.GUI.ImageCoordAndType;
+import code.IO.Input;
+import code.IO.Output;
 import code.fileio.CustomFilter;
 import code.fileio.FileInputAndOutput;
 
@@ -117,6 +121,7 @@ public class GUI {
 	private static final int PARENT_SELECTED = 4;
 	private static final int TOGGLE_INPUT_BUTTON = 5;
 	
+	
 	//List of all the images in the workspace
     private ArrayList<Image> circuitElementImages = new ArrayList<Image>();
     //List of all the possible types of images in the workspace
@@ -128,8 +133,107 @@ public class GUI {
     public ArrayList<Image> getElementImageTypes(){return elementImageTypes;}
     public ArrayList<ImageCoordAndType> getImageInfo(){return imageInfo;}
 
-	
-//	private JComponent contentPane;
+    
+    public void loadStateFromString(String state) {
+		
+    	String[] tokens = state.split("@");
+    	
+    	// tokens[0] is circuit elements
+    	
+    	String[] tokens_elems = tokens[0].split("\n");
+    	for(String s: tokens_elems) {
+    		
+    		System.out.println(s);
+    		if(s.contains("and") && !s.contains("nand")) {
+    			andGate g = new andGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+    		}
+    		else if(s.contains("or") && !s.contains("nor") && !s.contains("xnor") && !s.contains("xor")) {
+    			orGate g = new orGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+    		}
+			else if(s.contains("xor")) {
+				xorGate g = new xorGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("xnor")) {
+				xnorGate g = new xnorGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("not")) {
+				notGate g = new notGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("nor") && !s.contains("xnor")) {
+				norGate g = new norGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("nand")) {
+				nandGate g = new nandGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("in")) {
+				Input g = new Input();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("out")) {
+				Output g = new Output();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+    	}
+    	
+    	// tokens[1] is connections
+    	String[] tokens_conns = tokens[1].split("\n");
+    	for(String s: tokens_conns) {
+    		System.out.println(s);
+    		String[] connection = s.split(" ");
+    		if(connection.length == 2) {
+	    		System.out.println(connection[0]);
+	    		System.out.println(connection[1]);
+	    		model.makeConnectionFromIDs(connection[0], connection[1]);
+    		}
+    	}
+    	
+    	// tokens[2] is element counts
+    	String[] tokens_counts = tokens[2].split("\n");
+    	model.setAndGateNum(Integer.valueOf(tokens_counts[0]));
+    	model.setOrGateNum(Integer.valueOf(tokens_counts[1]));
+    	model.setXorGateNum(Integer.valueOf(tokens_counts[2]));
+    	model.setXnorGateNum(Integer.valueOf(tokens_counts[3]));
+    	model.setNotGateNum(Integer.valueOf(tokens_counts[4]));
+    	model.setNorGateNum(Integer.valueOf(tokens_counts[5]));
+    	model.setNandGateNum(Integer.valueOf(tokens_counts[6]));
+    	model.setInputNum(Integer.valueOf(tokens_counts[7]));
+    	model.setOutputNum(Integer.valueOf(tokens_counts[8]));
+    	
+    	// tokens[3] is imageinfo
+    	String[] tokens_images = tokens[3].split("\n");
+    	for(String s: tokens_images) {
+    		System.out.println(s);
+    		String[] imageInf = s.split(" ");
+    		System.out.println(imageInf[0]);
+    		System.out.println(imageInf[1]);
+    		System.out.println(imageInf[2]);
+    		System.out.println(imageInf[3]);
+    		ImageCoordAndType ict = new ImageCoordAndType(Integer.valueOf(imageInf[0]), Integer.valueOf(imageInf[1]), Integer.valueOf(imageInf[2]));
+    		ict.setID(imageInf[3]);
+    		imageInfo.add(ict);
+    		circuitElementImages.add(elementImageTypes.get(Integer.valueOf(imageInf[0])));
+    		
+    	}
+    	
+    	model.printAllWorkspaceElements();
+    	model.printAllConnectionsForAllCircuitElements();
+	}
 	
 
 	// This is used to set the offset for drawing the wires to the appropriate input on the destination gate
@@ -1271,14 +1375,54 @@ public class GUI {
 				
 		        if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            File file = fc.getSelectedFile();
+		            
 		            System.out.println("File chosen");
-		        }
-				
-				FileInputAndOutput fileio = new FileInputAndOutput();
-				String state = model.serializeModelData();
-				String path = "save1.txt";
-				fileio.saveStateToFile(state, path);
-						
+		            
+		            System.out.println(file.getName());
+		            
+		            FileInputAndOutput fileio = new FileInputAndOutput();
+					String state = model.serializeModelData();
+					String path = file.getAbsolutePath();
+					
+					System.out.println(file.getAbsolutePath());
+					System.out.println(file.getPath());
+					
+	        		String extension = null;
+	                
+	                int i = path.lastIndexOf('.');
+
+	                if (i > 0 &&  i < path.length() - 1) {
+	                    extension = path.substring(i+1).toLowerCase();
+	                }
+	                
+//	                if(extension == null) {
+//	                	path = path + ".lca";
+//	                }
+//	                else if(!extension.equals("lca")) {
+//	                	path = path + ".lca";
+//	                }
+	                
+	                if(extension == null || !extension.equals("lca")) {
+	                	JOptionPane.showMessageDialog(frame,"Wrong File Extension (must be .lca) -- Cannot save file!","Wrong File Extension",JOptionPane.YES_NO_OPTION);
+	                
+	                
+	                }
+	                
+	                else {
+		                if(file.exists()) {
+		                	
+		                	int selection = JOptionPane.showConfirmDialog(frame,"The file already exists, overwrite it?","Existing File Warning",JOptionPane.YES_NO_OPTION);
+		                	if(selection == JOptionPane.YES_OPTION) {
+		                		fileio.saveStateToFile(state, path);
+		                	}
+		                	else {}
+		                }
+		                else {
+		                	fileio.saveStateToFile(state, path);
+		                }
+	               }
+
+		        }		
 			}
 		});
 		
@@ -1293,14 +1437,31 @@ public class GUI {
 				
 		        if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            File file = fc.getSelectedFile();
-		            System.out.println("File chosen");
+		            if(!file.exists()) {
+		            	JOptionPane.showMessageDialog(frame,"Cannot load the file -- the file selected does not yet exist!", "Load Error",JOptionPane.ERROR_MESSAGE);
+		            }
+		            else{
+		            	
+		            	int selection = JOptionPane.showConfirmDialog(frame,"Warning: Any unsaved work will be lost.  Continue to load file?","Unsaved Work Warning",JOptionPane.YES_NO_OPTION);
+	                	if(selection == JOptionPane.YES_OPTION) {
+	                		System.out.println("File chosen");
+			            	String path = file.getAbsolutePath();
+					        String state = FileInputAndOutput.loadFileToString(path);
+					        imageInfo.clear();
+					        circuitElementImages.clear();
+					        model.getWorkspaceElements().clear();
+					        loadStateFromString(state);
+					        frame.getContentPane().revalidate();
+					        frame.getContentPane().repaint();
+	                	}
+	                	else {}
+   
+		            }
+		         
 		        }
 							
 			}
 		});
-		
-		
-		
 		
 		
 		menu.add(menuItem);

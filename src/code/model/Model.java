@@ -29,6 +29,78 @@ public class Model {
 	private int outputNum = 0;
 	
 	
+	public int getAndGateNum() {
+		return andGateNum;
+	}
+
+	public void setAndGateNum(int andGateNum) {
+		this.andGateNum = andGateNum;
+	}
+
+	public int getOrGateNum() {
+		return orGateNum;
+	}
+
+	public void setOrGateNum(int orGateNum) {
+		this.orGateNum = orGateNum;
+	}
+
+	public int getXorGateNum() {
+		return xorGateNum;
+	}
+
+	public void setXorGateNum(int xorGateNum) {
+		this.xorGateNum = xorGateNum;
+	}
+
+	public int getXnorGateNum() {
+		return xnorGateNum;
+	}
+
+	public void setXnorGateNum(int xnorGateNum) {
+		this.xnorGateNum = xnorGateNum;
+	}
+
+	public int getNotGateNum() {
+		return notGateNum;
+	}
+
+	public void setNotGateNum(int notGateNum) {
+		this.notGateNum = notGateNum;
+	}
+
+	public int getNorGateNum() {
+		return norGateNum;
+	}
+
+	public void setNorGateNum(int norGateNum) {
+		this.norGateNum = norGateNum;
+	}
+
+	public int getNandGateNum() {
+		return nandGateNum;
+	}
+
+	public void setNandGateNum(int nandGateNum) {
+		this.nandGateNum = nandGateNum;
+	}
+
+	public int getInputNum() {
+		return inputNum;
+	}
+
+	public void setInputNum(int inputNum) {
+		this.inputNum = inputNum;
+	}
+
+	public int getOutputNum() {
+		return outputNum;
+	}
+
+	public void setOutputNum(int outputNum) {
+		this.outputNum = outputNum;
+	}
+
 	private ArrayList<Object> workspaceElements = new ArrayList<Object>();
 	private GUI gui;
 	
@@ -183,20 +255,36 @@ public class Model {
 			}
 		}
 		
-		// int type, int upperLeftX, int upperLeftY) {
-		String imageInfoString = "";
+		
+		// Serialize counts of circuit elements in Model class
+		String counts = andGateNum + "%n" +
+						orGateNum + "%n" +
+						xorGateNum + "%n" +
+						xnorGateNum + "%n" +
+						notGateNum + "%n" +
+						norGateNum + "%n" +
+						nandGateNum + "%n" +
+						inputNum + "%n" +
+						outputNum + "%n";
+
+		
 		// Serialize imageInfo data
+		String imageInfoString = "";
+		
 		for(ImageCoordAndType imgCT: gui.getImageInfo()) {
 			imageInfoString = imageInfoString + imgCT.getElementType() + " " + 
-					imgCT.getUpperLeftImageX() + " " + imgCT.getUpperLeftImageY() + "%n";
+					imgCT.getUpperLeftImageX() + " " + imgCT.getUpperLeftImageY() + " " + imgCT.getID() + "%n";
 		}
 		
 		
-		modelData = idData + "%n" + connectionData1 + connectionData2 + "%n" + imageInfoString;
+		modelData = idData + "@" + connectionData1 + connectionData2 +"@"+ counts +"@" + imageInfoString;
 		
 		
 		return modelData;
 	}
+	
+	
+	
 	
 	
 	public void removeCircuitElementHelper(String id) {
@@ -501,6 +589,9 @@ public class Model {
 	 * The convention is that the parent is the element whose output will feed into one of the inputs of the child.
 	 */
 	public int makeCircuitConnection(Object parent, Object child) {
+		
+		System.out.println(parent);
+		System.out.println(child);
 		
 		// We are not allowing a child's output to feed into one of its inputs (no feedback)
 		if(parent == child) {System.out.println("Can't connect a circuit element to itself!"); 

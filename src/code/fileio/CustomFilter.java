@@ -30,9 +30,9 @@ public class CustomFilter extends FileFilter{
 		return ".lca";
 	}
 	
-	public String getExtensionOfFile(File f) {
+	public String getExtensionOfFile(File arg0) {
         
-		String nameOfFile = f.getName();
+		String nameOfFile = arg0.getName();
 		String extension = null;
         
         int i = nameOfFile.lastIndexOf('.');
