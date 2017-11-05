@@ -35,14 +35,13 @@
 
 package code.GUI;
 
-
+import code.logicGates.*;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -52,12 +51,11 @@ import java.awt.geom.Line2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -70,13 +68,15 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import code.model.Connection;
 import code.model.Model;
-
-import javax.swing.event.MouseInputAdapter;
-import java.io.IOException;
+import java.io.File;
+import code.GUI.ImageCoordAndType;
+import code.IO.Input;
+import code.IO.Output;
+import code.fileio.CustomFilter;
+import code.fileio.FileInputAndOutput;
 
 
 
@@ -97,8 +97,9 @@ public class GUI {
 	private static final int OUTPUT_BUTTON = 9;
 	private static final int OUTPUT_LOGIC_0 = 10;
 	private static final int OUTPUT_LOGIC_1 = 11;
-    private static final int OUTPUT_LOGIC_X = 12;
-    private static final int AND_HIGHLIGHTED = 13;
+	private static final int OUTPUT_LOGIC_X = 12;
+  
+  private static final int AND_HIGHLIGHTED = 13;
     private static final int OR_HIGHLIGHTED = 14;
     private static final int NOT_HIGHLIGHTED = 15;
     private static final int XOR_HIGHLIGHTED = 16;
@@ -125,8 +126,161 @@ public class GUI {
 	private static final int PARENT_SELECTED = 4;
 	private static final int TOGGLE_INPUT_BUTTON = 5;
 
-//	private JComponent contentPane;
+	//List of all the images in the workspace
+    private ArrayList<Image> circuitElementImages = new ArrayList<Image>();
+    //List of all the possible types of images in the workspace
+    private ArrayList<Image> elementImageTypes = new ArrayList<Image>();
+    //List of coordinates and types of the images in the workspace
+    private ArrayList<ImageCoordAndType> imageInfo = new ArrayList<ImageCoordAndType>();
+    
+    public ArrayList<Image> getCircuitElementImages(){return circuitElementImages;}
+    public ArrayList<Image> getElementImageTypes(){return elementImageTypes;}
+    public ArrayList<ImageCoordAndType> getImageInfo(){return imageInfo;}
 	
+    
+public void loadStateFromString(String state) {
+		
+    	String[] tokens = state.split("@");
+    	
+    	// tokens[0] is circuit elements
+    	
+    	String[] tokens_elems = tokens[0].split("\n");
+    	for(String s: tokens_elems) {
+    		
+    		System.out.println(s);
+    		if(s.contains("and") && !s.contains("nand")) {
+    			andGate g = new andGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+    		}
+    		else if(s.contains("or") && !s.contains("nor") && !s.contains("xnor") && !s.contains("xor")) {
+    			orGate g = new orGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+    		}
+			else if(s.contains("xor")) {
+				xorGate g = new xorGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("xnor")) {
+				xnorGate g = new xnorGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("not")) {
+				notGate g = new notGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("nor") && !s.contains("xnor")) {
+				norGate g = new norGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("nand")) {
+				nandGate g = new nandGate();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("in")) {
+				Input g = new Input();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+			else if(s.contains("out")) {
+				Output g = new Output();
+    			g.setID(s);
+    			model.getWorkspaceElements().add(g);
+			}
+    	}
+    	
+    	// tokens[1] is connections
+    	String[] tokens_conns = tokens[1].split("\n");
+    	for(String s: tokens_conns) {
+    		System.out.println(s);
+    		String[] connection = s.split(" ");
+    		if(connection.length == 2) {
+	    		System.out.println(connection[0]);
+	    		System.out.println(connection[1]);
+	    		model.makeConnectionFromIDs(connection[0], connection[1]);
+    		}
+    	}
+    	
+    	// tokens[2] is element counts
+    	String[] tokens_counts = tokens[2].split("\n");
+    	model.setAndGateNum(Integer.valueOf(tokens_counts[0]));
+    	model.setOrGateNum(Integer.valueOf(tokens_counts[1]));
+    	model.setXorGateNum(Integer.valueOf(tokens_counts[2]));
+    	model.setXnorGateNum(Integer.valueOf(tokens_counts[3]));
+    	model.setNotGateNum(Integer.valueOf(tokens_counts[4]));
+    	model.setNorGateNum(Integer.valueOf(tokens_counts[5]));
+    	model.setNandGateNum(Integer.valueOf(tokens_counts[6]));
+    	model.setInputNum(Integer.valueOf(tokens_counts[7]));
+    	model.setOutputNum(Integer.valueOf(tokens_counts[8]));
+    	
+    	// tokens[3] is imageinfo
+    	String[] tokens_images = tokens[3].split("\n");
+    	for(String s: tokens_images) {
+    		System.out.println(s);
+    		String[] imageInf = s.split(" ");
+    		if(imageInf.length == 4) {
+	    		System.out.println(imageInf[0]);
+	    		System.out.println(imageInf[1]);
+	    		System.out.println(imageInf[2]);
+	    		System.out.println(imageInf[3]);
+	    		ImageCoordAndType ict = new ImageCoordAndType(Integer.valueOf(imageInf[0]), Integer.valueOf(imageInf[1]), Integer.valueOf(imageInf[2]));
+	    		ict.setID(imageInf[3]);
+	    		imageInfo.add(ict);
+	    		circuitElementImages.add(elementImageTypes.get(Integer.valueOf(imageInf[0])));
+    		}
+    		
+    	}
+    	
+    	// tokens[4] is input IDs and Values
+    	String[] tokens_input_values = tokens[4].split("\n");
+    	System.out.println(tokens_input_values);
+    	for(String s: tokens_input_values) {
+    		String[] input_pair = s.split(" ");
+    		if(input_pair.length == 2) {
+    			for(Object o: model.getWorkspaceElements()) {
+    				if(o instanceof Input) {
+    					if(((Input)o).getID().equals(input_pair[0])) {
+    						((Input)o).setInputValue(Integer.valueOf(input_pair[1]));
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	for(int i = 0; i < circuitElementImages.size(); i++) {
+    		
+    		if(imageInfo.get(i).getElementType() == 7 ) {
+    			String id = imageInfo.get(i).getID();
+    			for(Object o: model.getWorkspaceElements()) {
+    				if(o instanceof Input) {
+    					if(((Input)o).getID().equals(id)){
+    						if(((Input)o).getInputValue() == 1) {
+    			            	circuitElementImages.remove(i);
+    			            	circuitElementImages.add(i, elementImageTypes.get(INPUT_LOGIC_1));
+    			            }
+    			            
+    			            if(((Input)o).getInputValue() == 0) {
+    			            	circuitElementImages.remove(i);
+    			            	circuitElementImages.add(i, elementImageTypes.get(INPUT_LOGIC_0));
+    			            }
+    					}
+    				}
+    			}
+    		}
+    		
+    		
+    	}
+    	
+    	
+    	model.printAllWorkspaceElements();
+    	model.printAllConnectionsForAllCircuitElements();
+	}
 
 	// This is used to set the offset for drawing the wires to the appropriate input on the destination gate
 	private HashMap<String, Integer> parentLineOffsets = new HashMap<String, Integer>();
@@ -174,15 +328,9 @@ public class GUI {
 				    private JPanel drawingPane;
 				    private int x;
 				    private int y;
-				    //List of all the images in the workspace
-				    private ArrayList<Image> circuitElementImages = new ArrayList<Image>();
-				    //List of all the possible types of images in the workspace
-				    private ArrayList<Image> elementImageTypes = new ArrayList<Image>();
-				    //List of coordinates and types of the images in the workspace
-				    private ArrayList<ImageCoordAndType> imageInfo = new ArrayList<ImageCoordAndType>();
-				    public ArrayList<Image> getCircuitElementImages(){return circuitElementImages;}
-				    public ArrayList<Image> getElementImageTypes(){return elementImageTypes;}
-				    public ArrayList<ImageCoordAndType> getImageInfo(){return imageInfo;}
+				    
+				 
+				    
 				    public JPanel getDrawingPane() {return drawingPane;}
 
 
@@ -211,45 +359,7 @@ public class GUI {
 				    }
 				    
 				    
-				    /*
-				     * This class is used to store information on the location of any image and type in the workspace
-				     * this also takes into account the center coordinates and the upper left coordinates and upper left 
-				     * corner of buffer space
-				     */
 				    
-				    class ImageCoordAndType{
-				    	private int elementType;
-				    	private int centerImageX;
-				    	private int centerImageY;
-				    	private int upperLeftImageX;
-				    	private int upperLeftImageY;
-				    	private int upperLeftBufferX;
-				    	private int upperLeftBufferY;
-				    	
-				    	private String id;
-				    	
-				    	public ImageCoordAndType(int type, int upperLeftX, int upperLeftY) {
-				    		elementType = type;
-				    		upperLeftImageX = upperLeftX;
-				    		upperLeftImageY = upperLeftY;
-				    		centerImageX = upperLeftX + 50;
-				    		centerImageY = upperLeftY + 25;
-				    		upperLeftBufferX = upperLeftX - 20;
-				    		upperLeftBufferY = upperLeftY - 10;
-				    			
-				    	}
-				    	
-				    	String getID() {return id;}
-				    	void setID(String s) {id = s;}
-				   				    	
-				    	int getElementType() {return elementType;}
-						int getUpperLeftImageX() {return upperLeftImageX;}
-						int getUpperLeftImageY () {return upperLeftImageY;}
-						int getCenterImageX() {return centerImageX;}
-						int getCenterImageY() {return centerImageY;}
-						int getUpperLeftBufferX() {return upperLeftBufferX;}
-						int getUpperLeftBufferY() {return upperLeftBufferY;}
-				    }
 				    
 				    
 				    
@@ -562,7 +672,7 @@ public class GUI {
 				    	    		}
 				    				elementImageTypes.add(img);
 				        			break;
-				    	        case 13:
+                    case 13:
                                 try {
                                     img = ImageIO.read(getClass().getResource("images/and_white.png"));
                                 } catch (IOException exp) {
@@ -669,16 +779,17 @@ public class GUI {
                                 }
                                 elementImageTypes.add(img);
                                 break;
+				    			
 				    		}
 				    			
 				    	}
 				    	
 				    }
-				    
-				    public void highlightImage(int index) {
+          
+          public void highlightImage(int index) {
 				        ImageCoordAndType imageToBeToggled = imageInfo.get(index);
-				        if (imageToBeToggled.elementType < AND_HIGHLIGHTED) {
-				            int imageType =imageToBeToggled.elementType + AND_HIGHLIGHTED;
+				        if (imageToBeToggled.getElementType() < AND_HIGHLIGHTED) {
+				            int imageType =imageToBeToggled.getElementType() + AND_HIGHLIGHTED;
 				            circuitElementImages.remove(index);
 				            circuitElementImages.add(index, elementImageTypes.get(imageType));
 				        }
@@ -686,7 +797,7 @@ public class GUI {
 				    
 				    public void unhighlightImage(int index) {
                         ImageCoordAndType imageToBeToggled = imageInfo.get(index);
-                        int imageType = imageToBeToggled.elementType;
+                        int imageType = imageToBeToggled.getElementType();
                         circuitElementImages.remove(index);
                         circuitElementImages.add(index, elementImageTypes.get(imageType));
                     }
@@ -713,7 +824,7 @@ public class GUI {
 				        }
 				        parentID = null;
 				    }
-				    
+				 
 				    //Handle mouse events.
 				    public void mouseReleased(MouseEvent e) {
 				        final int W = 300;
@@ -778,7 +889,7 @@ public class GUI {
 				        	
 				        	boolean b = false;
 				        	String id = "";
-				        	int index = 0;
+                  int index = 0;  
 				        	for (ImageCoordAndType temp : imageInfo) {
 				        		
 				        		int lowy = temp.getUpperLeftImageY()-10;
@@ -793,7 +904,7 @@ public class GUI {
 				        			b = true;
 				        			highlightImage(index);
 				        		}
-				        		index++;
+                    index++;
 				        	}
 				        	
 				        	if(b) {
@@ -848,7 +959,7 @@ public class GUI {
 				        	
 				        	boolean b = false;
 				        	String id = "";
-				        	int index = 0;
+                  int index = 0;
 				        	int parentIndex = -1;
 				        	for (ImageCoordAndType temp : imageInfo) {
 				        		
@@ -857,23 +968,23 @@ public class GUI {
 				        		int highy=lowy+70;
 				        		int highx=lowx+140;
 				        		
-				        		
-				        		if (temp.getID().equals(parentID)) {
+                    if (temp.getID().equals(parentID)) {
                                     parentIndex = index;
 				        		}
-				        		
+
 				        		if ((((e.getX()<=highx) && (e.getX()>=lowx)) && ((e.getY()<=highy) && (e.getY()>=lowy)))) {
 				        			circuitElementButtonClicked = INVALID;
 				        			id = temp.getID();
 				        			b = true;
 				        			
 				        		}
-				        		index++;
+                    index++;
 				        	}
 				        	
 				        	if(b) {
+				        		
 				        		System.out.println(id);
-				        		unhighlightImage(parentIndex);
+                    unhighlightImage(parentIndex);
 				        		String childID = id;
 				        		int connectionSuccessful = model.makeConnectionFromIDs(parentID, childID);
 				        		if(connectionSuccessful==7) {
@@ -1058,7 +1169,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = AND_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the AND Button " + circuitElementButtonClicked);
 			}
 		});
@@ -1077,7 +1188,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = OR_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the OR Button " + circuitElementButtonClicked);
 			}
 		});
@@ -1096,7 +1207,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = NOT_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the NOT Button");
 			}
 		});
@@ -1115,7 +1226,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = XOR_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the XOR Button");
 			}
 		});
@@ -1134,7 +1245,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = NAND_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the NAND Button");
 			}
 		});
@@ -1153,7 +1264,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = NOR_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the NOR Button");
 			}
 		});
@@ -1172,7 +1283,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = XNOR_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the XNOR Button");
 			}
 		});
@@ -1193,7 +1304,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = INPUT_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the INPUT Button");
 			}
 		});
@@ -1214,7 +1325,7 @@ public class GUI {
 			public void mousePressed(MouseEvent e) {
 				circuitElementButtonClicked = OUTPUT_BUTTON;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				System.out.println("I clicked the OUTPUT Button");
 			}
 		});
@@ -1246,7 +1357,7 @@ public class GUI {
 				
 				optionButtons = DELETE_BUTTON;
 				circuitElementButtonClicked = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 			}
 		});
 		gates_and_io.add(button);
@@ -1261,7 +1372,8 @@ public class GUI {
 				
 				optionButtons = CONNECT_BUTTON;
 				circuitElementButtonClicked = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
+				
 				//test
 				model.printAllFamilyTrees();
 				//end test
@@ -1279,7 +1391,7 @@ public class GUI {
 	                System.out.println("I clicked the TOGGLE Button");
 	                optionButtons = TOGGLE_INPUT_BUTTON;
 	                circuitElementButtonClicked = INVALID;
-	                newContentPane.unhighlightParent();
+                newContentPane.unhighlightParent();
 	            }
 	        });
 	    gates_and_io.add(button);
@@ -1292,7 +1404,7 @@ public class GUI {
 				System.out.println("I clicked the CANCEL Button");
 				circuitElementButtonClicked = INVALID;
 				optionButtons = INVALID;
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 			}
 		});
 		gates_and_io.add(button);
@@ -1305,25 +1417,26 @@ public class GUI {
 				System.out.println("I clicked the EVALUATE Button");
 				circuitElementButtonClicked = INVALID;
 				boolean canWeEvaluate = model.evaluateCircuitNetwork();
-				newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
+				
 				if(canWeEvaluate) {
 					
-					for(int i = 0; i < newContentPane.getImageInfo().size(); ++i) {
-						if(newContentPane.getImageInfo().get(i).getElementType() == 9) {
-							String id = newContentPane.getImageInfo().get(i).getID();
+					for(int i = 0; i < getImageInfo().size(); ++i) {
+						if(getImageInfo().get(i).getElementType() == 9) {
+							String id = getImageInfo().get(i).getID();
 							int outValue = model.getOutputValueFromID(id);
 							
 							if(outValue == 0) {
-								newContentPane.getCircuitElementImages().remove(i);
-								newContentPane.getCircuitElementImages().add(i, newContentPane.getElementImageTypes().get(10));
+								getCircuitElementImages().remove(i);
+								getCircuitElementImages().add(i, getElementImageTypes().get(10));
 								newContentPane.getDrawingPane().revalidate();
 								newContentPane.getDrawingPane().repaint();
 					        
 							}
 							
 							if(outValue == 1) {
-								newContentPane.getCircuitElementImages().remove(i);
-								newContentPane.getCircuitElementImages().add(i, newContentPane.getElementImageTypes().get(11));
+								getCircuitElementImages().remove(i);
+								getCircuitElementImages().add(i, getElementImageTypes().get(11));
 								newContentPane.getDrawingPane().revalidate();
 								newContentPane.getDrawingPane().repaint();
 							}
@@ -1338,14 +1451,16 @@ public class GUI {
 					errorDialog.setVerticalTextPosition(SwingConstants.NORTH);
 					errorDialog.setVerticalAlignment(SwingConstants.NORTH);
 					errorDialog.setText("<html> <font size=4> The circuit has missing connections and cannot be evaluated! Please complete the circuit.<br>All output values will now be set to X </font></html>");
-					JOptionPane.showMessageDialog(null,errorDialog, "Error!", 0, null);
+					JOptionPane.showMessageDialog(frame,errorDialog, "Error!", 0, null);
 					
 					//elementImageTypes
 					
-					for(int i = 0; i < newContentPane.getImageInfo().size(); ++i) {
-						if(newContentPane.getImageInfo().get(i).getElementType() == OUTPUT_BUTTON) {
-							newContentPane.getCircuitElementImages().remove(i);
-							newContentPane.getCircuitElementImages().add(i, newContentPane.getElementImageTypes().get(12));
+					//elementImageTypes
+					
+					for(int i = 0; i < getImageInfo().size(); ++i) {
+						if(getImageInfo().get(i).getElementType() == OUTPUT_BUTTON) {
+							getCircuitElementImages().remove(i);
+							getCircuitElementImages().add(i, getElementImageTypes().get(12));
 							newContentPane.getDrawingPane().revalidate();
 							newContentPane.getDrawingPane().repaint();
 						}
@@ -1369,16 +1484,16 @@ public class GUI {
 				circuitElementButtonClicked = INVALID;
 
 				// show alert
-				if (!newContentPane.imageInfo.isEmpty()) {
-					int confirmResult = JOptionPane.showConfirmDialog(null,
+				if (!imageInfo.isEmpty()) {
+					int confirmResult = JOptionPane.showConfirmDialog(frame,
 							"Are you sure you would like to clear the current workspace? All existing circuits will be destroyed.",
 							"Clear Confirmation", JOptionPane.YES_NO_OPTION);
 
 					if (confirmResult == JOptionPane.YES_OPTION) {
-						newContentPane.imageInfo.forEach(i -> model.removeCircuitElementHelper(i.id));
+						imageInfo.forEach(i -> model.removeCircuitElementHelper(i.getID()));
 
-						newContentPane.circuitElementImages.clear();
-						newContentPane.imageInfo.clear();
+						circuitElementImages.clear();
+						imageInfo.clear();
 
 						newContentPane.revalidate();
 
@@ -1386,7 +1501,7 @@ public class GUI {
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null,"No circuits to clear!","Empty Workspace", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(frame,"No circuits to clear!","Empty Workspace", JOptionPane.INFORMATION_MESSAGE);
 				}
 				optionButtons = INVALID;
 			}
@@ -1439,6 +1554,124 @@ public class GUI {
 
 		//Create the Main Menu Bar
 		menuBar = new JMenuBar();
+		
+		//Create File Menu
+		menu = new JMenu("File");
+		menu.setMnemonic(KeyEvent.VK_F);
+		menu.getAccessibleContext().setAccessibleDescription(
+		        "File Menu");
+//				
+//				//Add menu items to File Menu
+		menuItem = new JMenuItem("Save");
+		menuItem.setToolTipText("Save current design as .lca file. Note: Circuit(s) will be saved in unevaluated state.");
+		
+		JFileChooser fc = new JFileChooser();
+		CustomFilter cf = new CustomFilter();
+		fc.setFileFilter(cf);
+		fc.setAcceptAllFileFilterUsed(false);
+		
+		//Create an action listener for save
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				
+				
+				int returnVal = fc.showSaveDialog(frame);
+				
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File file = fc.getSelectedFile();
+		            
+		            System.out.println("File chosen");
+		            
+		            System.out.println(file.getName());
+		            
+		            FileInputAndOutput fileio = new FileInputAndOutput();
+					String state = model.serializeModelData();
+					String path = file.getAbsolutePath();
+					
+					System.out.println(file.getAbsolutePath());
+					System.out.println(file.getPath());
+					
+	        		String extension = null;
+	                
+	                int i = path.lastIndexOf('.');
+
+	                if (i > 0 &&  i < path.length() - 1) {
+	                    extension = path.substring(i+1).toLowerCase();
+	                }
+	                
+//			                if(extension == null) {
+//			                	path = path + ".lca";
+//			                }
+//			                else if(!extension.equals("lca")) {
+//			                	path = path + ".lca";
+//			                }
+	                
+	                if(extension == null || !extension.equals("lca")) {
+	                	JOptionPane.showMessageDialog(frame,"Wrong File Extension (must be .lca ('l' as in Last)) -- Cannot save file!","Wrong File Extension",JOptionPane.YES_NO_OPTION);
+	                
+	                
+	                }
+	                
+	                else {
+		                if(file.exists()) {
+		                	
+		                	int selection = JOptionPane.showConfirmDialog(frame,"The file already exists, overwrite it?","Existing File Warning",JOptionPane.YES_NO_OPTION);
+		                	if(selection == JOptionPane.YES_OPTION) {
+		                		fileio.saveStateToFile(state, path);
+		                	}
+		                	else {}
+		                }
+		                else {
+		                	fileio.saveStateToFile(state, path);
+		                }
+	               }
+
+		        }		
+			}
+			
+		});
+		
+		menu.add(menuItem);
+		menuItem = new JMenuItem("Load");
+		menuItem.setToolTipText("Load a .lca file.");
+		
+		//Create an action listener for load
+		menuItem.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+			
+				int returnVal = fc.showOpenDialog(frame);
+				
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File file = fc.getSelectedFile();
+		            if(!file.exists()) {
+		            	JOptionPane.showMessageDialog(frame,"Cannot load the file -- the file selected does not yet exist!", "Load Error",JOptionPane.ERROR_MESSAGE);
+		            }
+		            else{
+		            	
+		            	int selection = JOptionPane.showConfirmDialog(frame,"Warning: Any unsaved work will be lost.  Continue to load file?","Unsaved Work Warning",JOptionPane.YES_NO_OPTION);
+	                	if(selection == JOptionPane.YES_OPTION) {
+	                		System.out.println("File chosen");
+			            	String path = file.getAbsolutePath();
+					        String state = FileInputAndOutput.loadFileToString(path);
+					        imageInfo.clear();
+					        circuitElementImages.clear();
+					        model.getWorkspaceElements().clear();
+					        loadStateFromString(state);
+					        frame.getContentPane().revalidate();
+					        frame.getContentPane().repaint();
+	                	}
+	                	else {}
+   
+		            }
+		         
+		        }
+							
+			}
+		});
+		
+		
+		menu.add(menuItem);
+		menuBar.add(menu);
 		
 		// NON-WORKING MENU ITEMS -- WILL BE UNCOMMENTED FOR FUTURE USE
 		// DO NOT REMOVE THIS COMMENTED OUT CODE BELOW
@@ -1503,7 +1736,7 @@ public class GUI {
 		//Create an action listener for the about menu
 		menuItem.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-			    newContentPane.unhighlightParent();
+        newContentPane.unhighlightParent();
 				JLabel abouttext = new JLabel();
 				abouttext.setHorizontalTextPosition(SwingConstants.CENTER);
 				abouttext.setVerticalTextPosition(SwingConstants.NORTH);
