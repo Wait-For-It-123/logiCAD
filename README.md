@@ -41,9 +41,9 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
       ii. For the JDK, use this URL: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html and download the Java SE Development Kit 8u144 Windows x64 download.
 3. Using your favorite internet browser, navigate to this URL: https://github.com/Wait-For-It-123/logiCAD/releases/tag/v0.4.0
 4. Under the downloads section download "Source code (zip)"
-5. Unzip the downloaded file "logicad-0.4.0.zip".  The files will be unzipped into a directory called "logiCAD-0.3.0"
+5. Unzip the downloaded file "logicad-0.4.0.zip".  The files will be unzipped into a directory called "logiCAD-0.4.0"
 6. Launch Eclipse and go to "File -> Open projects from File System"
-7. Click "Directory" and navigate to the location where you extracted the zip file. Select the directory called "logiCAD-0.3.0" and click "OK"
+7. Click "Directory" and navigate to the location where you extracted the zip file. Select the directory called "logiCAD-0.4.0" and click "OK"
 8. Click "Finish"
 9. In the project explorer, click the arrow to the left to expand the LogiCAD project directory
 10. Navigate to src.code.driver
