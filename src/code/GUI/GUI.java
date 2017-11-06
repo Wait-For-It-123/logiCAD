@@ -1564,6 +1564,12 @@ public void loadStateFromString(String state) {
 						"<br>" + 
 						"Top Menu Bar:<br>" + 
 						"<br>" + 
+						"-File: Drop down menu of the following:<br>" + 
+						"<br>" + 
+						"&ensp;  &ensp;  Save:&ensp;  Save your current workspace by going through your directories and giving the document a name with the '.lac' extension.<br>" + 
+						"<br>" +
+						"&ensp;  &ensp;  Load:&ensp;  Load a previous logiCAD file by seraching through your directories and clicking open.<br>" +
+						"<br>" + 
 						"-Help: Drop down menu of the following:<br>" + 
 						"<br>" + 
 						"&ensp;  &ensp;  About:&ensp;  Information about the software and button features.<br>" + 
@@ -1596,15 +1602,17 @@ public void loadStateFromString(String state) {
 						"-Connect Button:&ensp;  The connect button allows the user to connect two circuit elements. To make a proper connection the user must first click connect and then select an input<br>"
 						+ "or source gate (gate whose output does not have a connection). Then the user should select the destination gate (gate that has a free input). When both have been selected a connection<br>"
 						+ "will have been made and a wire will be drawn between them. NOTE: To prevent wires from drawing over other circuit elements or wires the circuit elements must be laid out in a manner<br>"
-						+ "such that the path (using 90 degree angles) has no circuit elements.<br>" +
+						+ "such that the path (using 90 degree angles) has no circuit elements. The connect button will also remain on until another button is pressed.<br>" +
 						"\r\n" +
-						"-Toggle Input:&ensp;  The toggle input button is specifically used to toggle the Input circuit element to be either a 0 or a 1. This will be the value of the signal that propagates through the circuit.<br>" +
+						"-Toggle Input Button:&ensp;  The toggle input button is specifically used to toggle the Input circuit element to be either a 0 or a 1. This will be the value of the signal that propagates through the circuit.<br>" +
 						"\r\n" +
 						"-Cancel Button:&ensp;  The cancel button will invalidate any button selection or current operation.<br>" +
 						"\r\n" +
 						"-Evaluate Button:&ensp;  The Evaluate button will propagate the signal(s) through the circuit and display the output in the output circuit elements as a 0 or 1. For the evaluate button to trigger the<br>"
 						+ "propagation there must be no dangling wires and each gate must be fulle connected(no free inputs or outputs). If there are, an error window will popup and the outputs are set to \'X\', signifying that<br>"
 						+ "there are errors in the workspace.<br>" +
+						"\r\n" +
+						"-Clear All Button:&ensp;  The clear all button will remove everything in the current workspace. The user will be prompted to make sure they truly want to clear the entire workspace.<br>" +
 						"<br>" +
 						"-This gate menu bar is able to be moved around. By clicking the very left of the bar, a user can drag the menu bar all around and place it wherever one wishes.<br>" +
 						" If a user decides to even take the menu bar outside the window they may do so. When they click the exit button the bar will go back to where it last was.<br>" +
