@@ -1379,7 +1379,7 @@ public void loadStateFromString(String state) {
 //				
 //				//Add menu items to File Menu
 		menuItem = new JMenuItem("Save");
-		menuItem.setToolTipText("Save current design as .lca file. Note: Circuit(s) will be saved in unevaluated state.");
+		menuItem.setToolTipText("Save current design as .lca file ('l' as in Last). Note: Circuit(s) will be saved in unevaluated state.");
 		
 		JFileChooser fc = new JFileChooser();
 		CustomFilter cf = new CustomFilter();
@@ -1423,7 +1423,7 @@ public void loadStateFromString(String state) {
 //			                }
 	                
 	                if(extension == null || !extension.equals("lca")) {
-	                	JOptionPane.showMessageDialog(frame,"Wrong File Extension (must be .lca) -- Cannot save file!","Wrong File Extension",JOptionPane.YES_NO_OPTION);
+	                	JOptionPane.showMessageDialog(frame,"Wrong File Extension!  Must be .lca ('l' as in Last).  Cannot save file!","Wrong File Extension",JOptionPane.YES_NO_OPTION);
 	                
 	                
 	                }
