@@ -1566,7 +1566,7 @@ public void loadStateFromString(String state) {
 						"<br>" + 
 						"-File: Drop down menu of the following:<br>" + 
 						"<br>" + 
-						"&ensp;  &ensp;  Save:&ensp;  Save your current workspace by going through your directories and giving the document a name with the '.lca' extension.<br>" + 
+						"&ensp;  &ensp;  Save:&ensp;  Save your current workspace to a location of your choice and give the file a name with the '.lca' extension.<br>" + 
 						"<br>" +
 						"&ensp;  &ensp;  Load:&ensp;  Load a previous logiCAD file by searching through your directories and selecting a .lca file to open<br>" +
 						"<br>" + 
