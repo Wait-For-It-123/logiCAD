@@ -66,8 +66,16 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
 11. Right click on the file "driver.java" and select Run As -> Java Application
 12. The LogiCAD application should be launched 
 
+### NEW FEATURES:
+1. Saving and Loading
 
+      i. The save button is located under File -> Save. A file explorer will pop up for you to choose the location
+      
+      ii. All LogiCAD files must be saved as .lca files.
+      
+      iii. The load button is located under File -> Load. A file explorer window will pop up for you to choose the file. 
 
+      iv. This will restore the workspace to the state from when it was saved. 
 
 
 
