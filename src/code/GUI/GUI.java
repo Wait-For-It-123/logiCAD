@@ -1379,7 +1379,7 @@ public void loadStateFromString(String state) {
 //				
 //				//Add menu items to File Menu
 		menuItem = new JMenuItem("Save");
-		menuItem.setToolTipText("Save current design as .lca file ('l' as in Last). Note: Circuit(s) will be saved in unevaluated state.");
+		menuItem.setToolTipText("Save current design as .lca file ('l' as in LogiCAD). Note: Circuit(s) will be saved in unevaluated state.");
 		
 		JFileChooser fc = new JFileChooser();
 		CustomFilter cf = new CustomFilter();
@@ -1566,9 +1566,9 @@ public void loadStateFromString(String state) {
 						"<br>" + 
 						"-File: Drop down menu of the following:<br>" + 
 						"<br>" + 
-						"&ensp;  &ensp;  Save:&ensp;  Save your current workspace by going through your directories and giving the document a name with the '.lac' extension.<br>" + 
+						"&ensp;  &ensp;  Save:&ensp;  Save your current workspace by going through your directories and giving the document a name with the '.lca' extension.<br>" + 
 						"<br>" +
-						"&ensp;  &ensp;  Load:&ensp;  Load a previous logiCAD file by seraching through your directories and clicking open.<br>" +
+						"&ensp;  &ensp;  Load:&ensp;  Load a previous logiCAD file by searching through your directories and selecting a .lca file to open<br>" +
 						"<br>" + 
 						"-Help: Drop down menu of the following:<br>" + 
 						"<br>" + 
