@@ -2,7 +2,7 @@
 
 Team project for CSE442 - Software Engineering at University at Buffalo, Fall 2017.
 
-LogiCAD is a Computer-Aided Design application for creating digtial circuits using seven basic logic gates: AND, OR, NOT, XOR, NAND, NOR, and XNOR.  LogiCAD provides the user with a visual interface with which to interact with the circuit building blocks, making the design process easier.  Testing of the circuit is achieved by changing input signal values; the output signal values of the circuit are then calculated through appropriate signal propagation, allowing the user to verify circuit correctness.
+LogiCAD is a Computer-Aided Design application for creating digtial circuits using seven basic logic gates: AND, OR, NOT, XOR, NAND, NOR, and XNOR.  LogiCAD provides the user with a visual interface with which to interact with the circuit building blocks, making the design process easier.  Testing of the circuit is achieved by changing input signal values; the output signal values of the circuit are then calculated through appropriate signal propagation, allowing the user to verify circuit correctness.  Circuits built in LogiCAD can be saved using the save function located under File->Save.  Files are saved in .lca ('l' as in LogiCAD) format.  Circuits are saved in an unevaluated state.  Files with extension .lca can be loaded by using the Load function located under File->Load.  The circuit that was previously saved will appear in the workspace in an unevaluated state.
 
 ## Target End-User:
 Our target end-user for LogiCAD is a person who has working knowledge of digital logic circuits (including logic gates) and is capable of designing their own circuits.
@@ -71,11 +71,11 @@ These directions for running LogiCAD are for 64-bit machines running Windows 10 
 
       i. The save button is located under File -> Save. A file explorer will pop up for you to choose the location
       
-      ii. All LogiCAD files must be saved as .lca files.
+      ii. All LogiCAD files must be saved as .lca files ('l' as in LogiCAD). Circuits are saved in unevaluated states.
       
-      iii. The load button is located under File -> Load. A file explorer window will pop up for you to choose the file. 
+      iii. The load button is located under File -> Load. A file explorer window will pop up for you to choose the (.lca) file. 
 
-      iv. This will restore the workspace to the state from when it was saved. 
+      iv. This will restore the workspace to the state from when it was saved.  Any circuit(s) will be in an unevaluated state(s) 
 
 
 
