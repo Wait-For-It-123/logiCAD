@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import code.logicGates.*;
 import code.GUI.GUI;
 import code.IO.*;
+import code.GUI.ImageCoordAndType;
+import java.awt.Image;
 
 /**
- * @author Ian, Baqi
+ * @author Ian, Baqi, Simran (Collaborator)
  *
  */
 public class Model {
@@ -25,6 +27,79 @@ public class Model {
 	private int nandGateNum = 0;
 	private int inputNum = 0;
 	private int outputNum = 0;
+	
+	public int getAndGateNum() {
+		return andGateNum;
+	}
+
+	public void setAndGateNum(int andGateNum) {
+		this.andGateNum = andGateNum;
+	}
+
+	public int getOrGateNum() {
+		return orGateNum;
+	}
+
+	public void setOrGateNum(int orGateNum) {
+		this.orGateNum = orGateNum;
+	}
+
+	public int getXorGateNum() {
+		return xorGateNum;
+	}
+
+	public void setXorGateNum(int xorGateNum) {
+		this.xorGateNum = xorGateNum;
+	}
+
+	public int getXnorGateNum() {
+		return xnorGateNum;
+	}
+
+	public void setXnorGateNum(int xnorGateNum) {
+		this.xnorGateNum = xnorGateNum;
+	}
+
+	public int getNotGateNum() {
+		return notGateNum;
+	}
+
+	public void setNotGateNum(int notGateNum) {
+		this.notGateNum = notGateNum;
+	}
+
+	public int getNorGateNum() {
+		return norGateNum;
+	}
+
+	public void setNorGateNum(int norGateNum) {
+		this.norGateNum = norGateNum;
+	}
+
+	public int getNandGateNum() {
+		return nandGateNum;
+	}
+
+	public void setNandGateNum(int nandGateNum) {
+		this.nandGateNum = nandGateNum;
+	}
+
+	public int getInputNum() {
+		return inputNum;
+	}
+
+	public void setInputNum(int inputNum) {
+		this.inputNum = inputNum;
+	}
+
+	public int getOutputNum() {
+		return outputNum;
+	}
+
+	public void setOutputNum(int outputNum) {
+		this.outputNum = outputNum;
+	}
+
 	
 	
 	private ArrayList<Object> workspaceElements = new ArrayList<Object>();
@@ -64,11 +139,166 @@ public class Model {
 	public String workspaceElementsToString() {
 		String elementString = ""; 
 		
-		// Put your code here
+        for(int i = 0; i < workspaceElements.size(); i++) {
+            if (i > 0) { //want to append a newline character to the subsequent iterations after the first element
+                elementString = elementString + "\n";
+            }
+            Object obj = workspaceElements.get(i);
+            // getSimpleName will only give the name of the class, not fully qualified name
+			elementString = elementString + obj.getClass().getSimpleName() + " ";
+			if(obj instanceof Gate) {
+				elementString = elementString + ((Gate) obj).getID();
+			}
+			else if(obj instanceof Input) {
+				elementString = elementString + ((Input) obj).getID();
+			}
+			else if(obj instanceof Output) {
+				elementString = elementString + ((Output) obj).getID();
+			}
+		}
 		
 		return elementString;
 	}
 	
+	
+	public void imageCoordHelper(int type, int x, int y) {
+		
+		gui.getImageInfo().add(new ImageCoordAndType(type, x, y));
+	}
+	
+	/*
+	 * ids of workspace elements
+	 * Forward connections of elements
+	 * Note: locations of elements are in the GUI
+	 */
+	public String serializeModelData() {
+		String modelData = "";
+		String idData = "";
+		String connectionData1 = "";
+		String connectionData2 = "";
+		
+		// Capture ids of circuit elements in serialization String
+		for(int i = 0; i < workspaceElements.size(); ++i) {
+			Object obj = workspaceElements.get(i);
+			if(obj instanceof Gate) {
+				Gate g = (Gate) obj;
+				idData += g.getID() + "%n";
+			}
+			else if(obj instanceof Input) {
+				Input in = (Input) obj;
+				idData += in.getID() + "%n";
+			}
+			else if(obj instanceof Output) {
+				Output out = (Output) obj;
+				idData += out.getID() + "%n";
+			}
+		}
+		
+		// Serialize Forward connections in circuit networks
+		// A forward connection is stored as follows:
+		// and0 or3
+		// The above means there that in the forward connection between and0 and or3
+		// that and0 is the parent and or3 is the child
+		for(int i = 0; i < workspaceElements.size(); ++i) {
+			Object obj = workspaceElements.get(i);
+			if(obj instanceof Gate) {
+				Gate g = (Gate) obj;
+				for(int j = 0; j < g.getChildren_Inputs1().size(); ++j) {
+					Object childObject = g.getChildren_Inputs1().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData1 += g.getID() + " " + childGate.getID() + "%n";
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData1 += g.getID() + " " + inChild.getID() + "%n";
+						
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData1 += g.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+				for(int j = 0; j < g.getChildren_Inputs2().size(); ++j) {
+					Object childObject = g.getChildren_Inputs2().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData2 += g.getID() + " " + childGate.getID() + "%n";
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData2 += g.getID() + " " + inChild.getID() + "%n";	
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData2 += g.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+			}
+			else if(obj instanceof Input) {
+				Input in = (Input) obj;
+				for(int j = 0; j < in.getInput1Children().size(); ++j) {
+					Object childObject = in.getInput1Children().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData1 += in.getID() + " " + childGate.getID() + "%n";
+						
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData1 += in.getID() + " " + inChild.getID() + "%n";
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData1 += in.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+				for(int j = 0; j < in.getInput2Children().size(); ++j) {
+					Object childObject = in.getInput2Children().get(j);
+					if(childObject instanceof Gate) {
+						Gate childGate = (Gate) childObject;
+						connectionData2 += in.getID() + " " + childGate.getID() + "%n";
+					}
+					else if(childObject instanceof Input) {
+						Input inChild = (Input) childObject;
+						connectionData2 += in.getID() + " " + inChild.getID() + "%n";
+					}
+					else if(childObject instanceof Output) {
+						Output outChild = (Output) childObject;
+						connectionData2 += in.getID() + " " + outChild.getID() + "%n";
+					}
+				}
+				
+			}
+		}
+		
+		
+		// Serialize counts of circuit elements in Model class
+		String counts = andGateNum + "%n" +
+						orGateNum + "%n" +
+						xorGateNum + "%n" +
+						xnorGateNum + "%n" +
+						notGateNum + "%n" +
+						norGateNum + "%n" +
+						nandGateNum + "%n" +
+						inputNum + "%n" +
+						outputNum + "%n";
+
+		
+		// Serialize imageInfo data
+		String imageInfoString = "";
+		
+		for(ImageCoordAndType imgCT: gui.getImageInfo()) {
+			imageInfoString = imageInfoString + imgCT.getElementType() + " " + 
+					imgCT.getUpperLeftImageX() + " " + imgCT.getUpperLeftImageY() + " " + imgCT.getID() + "%n";
+		}
+		
+		
+		modelData = idData + "@" + connectionData1 + connectionData2 +"@"+ counts +"@" + imageInfoString + "@" + allInputsAndValuestoString0();
+		
+		
+		return modelData;
+	}
 	
 	public void removeCircuitElementHelper(String id) {
 		
@@ -713,6 +943,17 @@ public class Model {
 				System.out.println("Input Identity:" + i + ", Name: " + i.getID() +  ", Value: " + i.getInputValue());
 			}
 		}
+	}
+	
+	public String allInputsAndValuestoString0() {
+		String ans = "";
+		for(Object obj: workspaceElements) {
+			if(obj.getClass() == Input.class) {
+				Input i = (Input) obj;
+				ans = ans + i.getID() + " " + i.getInputValue() + "%n";
+			}
+		}
+		return ans;
 	}
 	
 	// returns a string that lists all inputs and values
